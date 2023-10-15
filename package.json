@@ -1,7 +1,7 @@
 {
   "name": "riwaq-pg",
   "version": "1.0.0",
-  "description": "",
+  "description": "Stateful database schema using PostgreSQL, PostGraphile, and Prisma that reflects immediately as a real-time GraphQL API.",
   "author": "Mohamed Dardouri <med@mahd.group>",
   "license": "MIT",
   "scripts": {

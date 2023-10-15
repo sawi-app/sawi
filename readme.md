@@ -1,6 +1,8 @@
 # Riwaq-PG: PostgreSQL, PostGraphile, and Prisma Stack
 
-Welcome to the Riwaq-PG template repository! This setup offers a seamless development experience for a stateful database schema using PostgreSQL, PostGraphile, and Prisma. With a combination of Docker configurations and helpful scripts, you'll be up and running in no time.
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/mahd-dev/riwaq-pg/blob/main/LICENSE)
+
+Welcome to the Riwaq-PG template repository! This setup offers a seamless development experience for a stateful database schema using PostgreSQL PostGraphile, and Prisma that reflects immediately as a real-time GraphQL API. you'll be up and running in no time.
 
 ## 📌 Prerequisites
 
@@ -18,30 +20,33 @@ Once all prerequisites are met, you can proceed to the next steps.
 
 ## 🚀 Getting Started
 
-1. **Use this Template**:
-   Start by creating your own repository using the [Riwaq-PG template](https://github.com/new?template_name=riwaq-pg&template_owner=mahd-dev).
+### 1. **Use this Template**:
 
-2. **Clone Your Repository**:
+Start by creating your own repository using the [Riwaq-PG template](https://github.com/new?template_name=riwaq-pg&template_owner=mahd-dev).
+
+### 2. **Clone Your Repository**:
 
 ```bash
 git clone [YOUR-NEW-REPOSITORY-URL] && cd [YOUR-NEW-REPOSITORY-DIRECTORY]
 ```
-3. **Run the Stack Locally**:
-  Use the following command to run the stack:
 
-  ```bash
-  docker compose -p [MY-PROJECT-NAME] up -d
-  ```
+### 3. **Run the Stack Locally**:
+
+Use the following command to run the stack:
+
+```bash
+docker compose -p [MY-PROJECT-NAME] up -d
+```
 
 > Replace `[MY-PROJECT-NAME]` with a name of your choice for the project. This name will be used as a prefix for your containers.
 
-4. **Install dependencies**:
+### 4. **Install dependencies**:
 
 ```bash
 yarn install
 ```
 
-5. **Create `.env` file**:
+### 5. **Create `.env` file**:
 
 Create your `.env` file from `.env.example`:
 
@@ -49,7 +54,7 @@ Create your `.env` file from `.env.example`:
 cp .env.example .env
 ```
 
-6. **Sync schema**:
+### 6. **Sync schema**:
 
 This will synchronize the predefined example schema containing the `Org` table to your deployed database:
 
@@ -57,7 +62,7 @@ This will synchronize the predefined example schema containing the `Org` table t
 yarn push
 ```
 
-7. **Browse & use the API**:
+### 7. **Browse & use the API**:
 
 Tada! you have a fully working GraphQL API under http://localhost:5000/graphql
 
