@@ -93,4 +93,4 @@ If you have questions or run into issues, feel free to raise an issue on the [Ri
 
 ---
 
-Thank you for choosing Riwaq-PG! Happy migrating :p 🚀
+Thank you for choosing Riwaq-PG! Happy migrating 😛 🚀
