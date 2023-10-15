@@ -1,8 +1,8 @@
-### Riwaq-PG: PostgreSQL, PostGraphile, and Prisma Stack
+# Riwaq-PG: PostgreSQL, PostGraphile, and Prisma Stack
 
 Welcome to the Riwaq-PG template repository! This setup offers a seamless development experience for a stateful database schema using PostgreSQL, PostGraphile, and Prisma. With a combination of Docker configurations and helpful scripts, you'll be up and running in no time.
 
-#### 📌 Prerequisites
+## 📌 Prerequisites
 
 Before getting started, ensure you have the following tools installed on your machine:
 
@@ -16,7 +16,7 @@ Before getting started, ensure you have the following tools installed on your ma
   
 Once all prerequisites are met, you can proceed to the next steps.
 
-#### 🚀 Getting Started
+## 🚀 Getting Started
 
 1. **Use this Template**:
    Start by creating your own repository using the [Riwaq-PG template](https://github.com/new?template_name=riwaq-pg&template_owner=mahd-dev).
@@ -57,7 +57,7 @@ This will synchronize the predefined example schema containing the `Org` table t
 yarn push
 ```
 
-#### 📝 Define Your Database Schema
+## 📝 Define Your Database Schema
 
 The heart of your project lies in the `schema.prisma` file. This is where you'll define your database schema. Once you've outlined your schema:
 
@@ -69,7 +69,7 @@ yarn migrate [MY_MIGRATION_NAME]
 
 Replace `[MY_MIGRATION_NAME]` with a descriptive name for your migration.
 
-#### 📜 Scripts Explanation
+## 📜 Scripts Explanation
 
 There is a collection of scripts tailored to manage and manipulate your Prisma and your database schema:
 
@@ -87,10 +87,10 @@ There is a collection of scripts tailored to manage and manipulate your Prisma a
 - [**format**](https://www.prisma.io/docs/reference/api-reference/command-reference#format): Correctly format your Prisma schema.
 - [**studio**](https://www.prisma.io/docs/reference/api-reference/command-reference#studio): Open Prisma Studio, a visual interface for your database.
 
-#### 🧐 Need More Help?
+## 🧐 Need More Help?
 
 If you have questions or run into issues, feel free to raise an issue on the [Riwaq-PG repository](https://github.com/mahd-dev/riwaq-pg) or consult the official documentation for [PostgreSQL](https://www.postgresql.org/docs/), [PostGraphile](https://www.graphile.org/postgraphile/introduction/), and [Prisma](https://www.prisma.io/docs/).
 
 ---
 
-Thank you for choosing Riwaq-PG! Happy coding! 🚀
+Thank you for choosing Riwaq-PG! Happy migrating :p 🚀
