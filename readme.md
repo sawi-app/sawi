@@ -5,7 +5,7 @@ Welcome to the Riwaq-PG template repository! This setup offers a seamless develo
 #### 🚀 Getting Started
 
 1. **Use this Template**:
-  Start by creating your own repository using the [Riwaq-PG template](https://github.com/mahd-dev/riwaq-pg).
+  Start by creating your own repository using the [Riwaq-PG template](https://github.com/new?template_name=riwaq-pg&template_owner=mahd-dev).
   
 2. **Clone Your Repository**:
   
