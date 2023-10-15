@@ -2,6 +2,20 @@
 
 Welcome to the Riwaq-PG template repository! This setup offers a seamless development experience for a stateful database schema using PostgreSQL, PostGraphile, and Prisma. With a combination of Docker configurations and helpful scripts, you'll be up and running in no time.
 
+#### 📌 Prerequisites
+
+Before getting started, ensure you have the following tools installed on your machine:
+
+1. **Docker & Docker Compose**: This project uses Docker to containerize the services. Install Docker from [here](https://docs.docker.com/get-docker/) and Docker Compose from [here](https://docs.docker.com/compose/install/).
+  
+2. **Node.js**: Our scripts and dependencies require Node.js. Download and install it from [nodejs.org](https://nodejs.org/).
+  
+3. **Yarn**: This project recommends using `yarn` as the package manager. Install it by running `npm install -g yarn` or follow the [official documentation](https://classic.yarnpkg.com/en/docs/install/).
+  
+4. **Git**: Ensure you have Git installed for version control. If not, you can download it from [git-scm.com](https://git-scm.com/).
+  
+Once all prerequisites are met, you can proceed to the next steps.
+
 #### 🚀 Getting Started
 
 1. **Use this Template**:
@@ -9,17 +23,19 @@ Welcome to the Riwaq-PG template repository! This setup offers a seamless develo
 
 2. **Clone Your Repository**:
 
-- ```bash
-  git clone [YOUR-NEW-REPOSITORY-URL] && cd [YOUR-NEW-REPOSITORY-DIRECTORY]
-  ```
-- **Deploy the Stack Locally**:
-  Use the following command to deploy your stack:
+```bash
+git clone [YOUR-NEW-REPOSITORY-URL] && cd [YOUR-NEW-REPOSITORY-DIRECTORY]
+```
+3. **Run the Stack Locally**:
+  Use the following command to run the stack:
 
-  - ```bash
-     docker compose -p [MY-PROJECT-NAME] up -d
-     ```
+  ```bash
+    docker compose -p [MY-PROJECT-NAME] up -d
+    ```
 
 > Replace `[MY-PROJECT-NAME]` with a name of your choice for the project. This name will be used as a prefix for your containers.
+
+4. **Install dependencies**:
 
 We recommend using [yarn](https://classic.yarnpkg.com/en/docs/install/) for managing and running scripts as it provides a smoother experience..
 
@@ -29,23 +45,27 @@ Once `yarn` is installed, you just need to install dependencies using
 yarn install
 ```
 
+4. **Create `.env` file**:
+
 Create your `.env` file from `.env.example`:
 
 ```bash
 cp .env.example .env
 ```
 
-Then, you can run the scripts using `yarn SCRIPT_NAME`. For example:
+5. **Sync schema**:
+
+This will synchronize the predefined example schema containing the `Org` table to your deployed database:
 
 ```bash
-yarn status
+yarn push
 ```
 
 #### 📝 Define Your Database Schema
 
 The heart of your project lies in the `schema.prisma` file. This is where you'll define your database schema. Once you've outlined your schema:
 
-1. Create migrations using the following command:
+Create migrations using the following command:
 
 ```bash
 yarn migrate [MY_MIGRATION_NAME]
