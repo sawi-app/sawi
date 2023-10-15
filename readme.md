@@ -29,6 +29,12 @@ Once `yarn` is installed, you just need to install dependencies using
 yarn install
 ```
 
+Create your `.env` file from `.env.example`:
+
+```bash
+cp .env.example .env
+```
+
 Then, you can run the scripts using `yarn SCRIPT_NAME`. For example:
 
 ```bash
