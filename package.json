@@ -1,0 +1,33 @@
+{
+  "name": "riwaq-pg",
+  "version": "1.0.0",
+  "description": "",
+  "author": "Mohamed Dardouri <med@mahd.group>",
+  "license": "MIT",
+  "scripts": {
+    "status": "prisma migrate status",
+    "migrate": "prisma migrate dev --name",
+    "reset": "prisma migrate reset",
+    "deploy": "prisma migrate deploy",
+    "diff": "prisma migrate diff",
+    "pull": "prisma db pull",
+    "push": "prisma db push",
+    "seed": "prisma db seed",
+    "execute": "prisma db execute",
+    "generate": "prisma generate",
+    "validate": "prisma validate",
+    "format": "prisma validate",
+    "studio": "prisma studio"
+  },
+  "prisma": {
+    "schema": "schema.prisma",
+    "seed": "ts-node seed.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.6",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2",
+    "@prisma/client": "^5.4.2",
+    "prisma": "^5.4.2"
+  }
+}

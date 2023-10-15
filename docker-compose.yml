@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  postgres:
+    build:
+      context: docker
+      dockerfile: postgres.Dockerfile
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+      wal_level: logical
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  postgraphile:
+    build:
+      context: docker
+      dockerfile: postgraphile.Dockerfile
+    container_name: postgraphile
+    command: |
+      --watch --enhance-graphiql --allow-explain
+      --live
+      --append-plugins @graphile/subscriptions-lds
+      --dynamic-json
+      --cors
+      --retry-on-init-fail
+      --no-ignore-rbac
+      --no-setof-functions-contain-nulls
+      --websocket-operations all
+      --enable-query-batching
+      --legacy-relations omit
+      --graphiql /
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/postgres
+      SCHEMA: public
+    ports:
+      - "5000:5000"
+    depends_on:
+      - postgres
+
+volumes:
+  postgres-data:
