@@ -30,22 +30,18 @@ git clone [YOUR-NEW-REPOSITORY-URL] && cd [YOUR-NEW-REPOSITORY-DIRECTORY]
   Use the following command to run the stack:
 
   ```bash
-    docker compose -p [MY-PROJECT-NAME] up -d
-    ```
+  docker compose -p [MY-PROJECT-NAME] up -d
+  ```
 
 > Replace `[MY-PROJECT-NAME]` with a name of your choice for the project. This name will be used as a prefix for your containers.
 
 4. **Install dependencies**:
 
-We recommend using [yarn](https://classic.yarnpkg.com/en/docs/install/) for managing and running scripts as it provides a smoother experience..
-
-Once `yarn` is installed, you just need to install dependencies using
-
 ```bash
 yarn install
 ```
 
-4. **Create `.env` file**:
+5. **Create `.env` file**:
 
 Create your `.env` file from `.env.example`:
 
@@ -53,7 +49,7 @@ Create your `.env` file from `.env.example`:
 cp .env.example .env
 ```
 
-5. **Sync schema**:
+6. **Sync schema**:
 
 This will synchronize the predefined example schema containing the `Org` table to your deployed database:
 
