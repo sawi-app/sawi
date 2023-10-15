@@ -5,25 +5,21 @@ Welcome to the Riwaq-PG template repository! This setup offers a seamless develo
 #### 🚀 Getting Started
 
 1. **Use this Template**:
-  Start by creating your own repository using the [Riwaq-PG template](https://github.com/new?template_name=riwaq-pg&template_owner=mahd-dev).
-  
-2. **Clone Your Repository**:
-  
-  bash
-  
+   Start by creating your own repository using the [Riwaq-PG template](https://github.com/new?template_name=riwaq-pg&template_owner=mahd-dev).
 
-- `git clone [YOUR-NEW-REPOSITORY-URL] && cd [YOUR-NEW-REPOSITORY-DIRECTORY]`
-  
+2. **Clone Your Repository**:
+
+- ```bash
+  git clone [YOUR-NEW-REPOSITORY-URL] && cd [YOUR-NEW-REPOSITORY-DIRECTORY]
+  ```
 - **Deploy the Stack Locally**:
   Use the following command to deploy your stack:
-  
-  bash
-  
 
-1. `docker compose -p [MY-PROJECT-NAME] up -d`
-  
-  Replace `[MY-PROJECT-NAME]` with a name of your choice for the project. This name will be used as a prefix for your containers.
-  
+  - ```bash
+     docker compose -p [MY-PROJECT-NAME] up -d
+     ```
+
+> Replace `[MY-PROJECT-NAME]` with a name of your choice for the project. This name will be used as a prefix for your containers.
 
 #### 🧶 Using Yarn
 
@@ -31,13 +27,25 @@ We recommend using `yarn` for managing and running scripts as it provides a smoo
 
 Once `yarn` is installed, you can run the scripts using `yarn SCRIPT_NAME`. For example:
 
-bash
+```bash
+yarn status
+```
 
-`yarn migrate`
+#### 📝 Define Your Database Schema
+
+The heart of your project lies in the `schema.prisma` file. This is where you'll define your database schema. Once you've outlined your schema:
+
+1. Create migrations using the following command:
+
+```bash
+yarn migrate [MY_MIGRATION_NAME]
+```
+
+Replace `[MY_MIGRATION_NAME]` with a descriptive name for your migration.
 
 #### 📜 Scripts Explanation
 
-Inside the `package.json`, you'll find a collection of scripts tailored to manage and manipulate your Prisma schema:
+There is a collection of scripts tailored to manage and manipulate your Prisma and your database schema:
 
 - [**status**](https://www.prisma.io/docs/reference/api-reference/command-reference#migrate-status): Check the status of your migrations.
 - [**diff**](https://www.prisma.io/docs/reference/api-reference/command-reference#migrate-diff): Check the difference between the current state of the database and the Prisma schema.
@@ -52,17 +60,6 @@ Inside the `package.json`, you'll find a collection of scripts tailored to manag
 - [**validate**](https://www.prisma.io/docs/reference/api-reference/command-reference#validate): Validate your Prisma schema.
 - [**format**](https://www.prisma.io/docs/reference/api-reference/command-reference#format): Correctly format your Prisma schema.
 - [**studio**](https://www.prisma.io/docs/reference/api-reference/command-reference#studio): Open Prisma Studio, a visual interface for your database.
-
-#### 📦 Docker Compose Configuration
-
-The provided `docker-compose.yml` file consists of configurations for two main services:
-
-- **postgres**: This is your PostgreSQL database, utilizing a custom Dockerfile, `postgres.Dockerfile`, located in the `docker` directory.
-  
-- **postgraphile**: This service sets up PostGraphile with a range of configurations to enhance its features. It watches for changes, enhances GraphiQL, allows live updates, and more. The associated Dockerfile, `postgraphile.Dockerfile`, is also found in the `docker` directory.
-  
-  The `postgraphile` service is dependent on the `postgres` service, ensuring the database is ready before PostGraphile starts.
-  
 
 #### 🧐 Need More Help?
 
