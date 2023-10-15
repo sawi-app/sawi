@@ -89,7 +89,7 @@ There is a collection of scripts tailored to manage and manipulate your Prisma a
 
 ## 🧐 Need More Help?
 
-If you have questions or run into issues, feel free to raise an issue on the [Riwaq-PG repository](https://github.com/mahd-dev/riwaq-pg) or consult the official documentation for [PostgreSQL](https://www.postgresql.org/docs/), [PostGraphile](https://www.graphile.org/postgraphile/introduction/), and [Prisma](https://www.prisma.io/docs/).
+If you have questions or run into issues, feel free to raise an issue on the [Riwaq-PG repository](https://github.com/mahd-dev/riwaq-pg/issues/new) or consult the official documentation for [PostgreSQL](https://www.postgresql.org/docs/), [PostGraphile](https://www.graphile.org/postgraphile/introduction/), and [Prisma](https://www.prisma.io/docs/).
 
 ---
 
