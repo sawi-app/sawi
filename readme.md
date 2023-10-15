@@ -21,11 +21,15 @@ Welcome to the Riwaq-PG template repository! This setup offers a seamless develo
 
 > Replace `[MY-PROJECT-NAME]` with a name of your choice for the project. This name will be used as a prefix for your containers.
 
-#### 🧶 Using Yarn
+We recommend using [yarn](https://classic.yarnpkg.com/en/docs/install/) for managing and running scripts as it provides a smoother experience..
 
-We recommend using `yarn` for managing and running scripts as it provides a smoother experience. If you haven't installed `yarn`, you can do so by following the [official documentation](https://classic.yarnpkg.com/en/docs/install/).
+Once `yarn` is installed, you just need to install dependencies using
 
-Once `yarn` is installed, you can run the scripts using `yarn SCRIPT_NAME`. For example:
+```bash
+yarn install
+```
+
+Then, you can run the scripts using `yarn SCRIPT_NAME`. For example:
 
 ```bash
 yarn status
