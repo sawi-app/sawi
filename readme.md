@@ -57,6 +57,12 @@ This will synchronize the predefined example schema containing the `Org` table t
 yarn push
 ```
 
+7. **Browse & use the API**:
+
+Tada! you have a fully working GraphQL API under http://localhost:5000/graphql
+
+You can explore use the GraphiQL under: http://localhost:5000
+
 ## 📝 Define Your Database Schema
 
 The heart of your project lies in the `schema.prisma` file. This is where you'll define your database schema. Once you've outlined your schema:
