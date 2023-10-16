@@ -22,7 +22,7 @@ Once all prerequisites are met, you can proceed to the next steps.
 
 ### 1. **Use this Template**:
 
-Start by creating your own repository using the [Riwaq-PG template](https://github.com/new?template_name=riwaq-pg&template_owner=mahd-dev).
+Start by creating your own repository using the [Riwaq-PG template](https://github.com/mahd-dev/riwaq-pg/fork).
 
 ### 2. **Clone Your Repository**:
 
