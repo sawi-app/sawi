@@ -30,9 +30,9 @@ Start by creating your own repository using the [Riwaq-PG template](https://gith
 git clone [YOUR-NEW-REPOSITORY-URL] && cd [YOUR-NEW-REPOSITORY-DIRECTORY]
 ```
 
-### 3. **Run the Stack Locally**:
+### 3. **Run the Realtime-enabled Postgres Locally**:
 
-Use the following command to run the stack:
+Use the following command to run the Realtime-enabled Postgres:
 
 ```bash
 docker compose -p [MY-PROJECT-NAME] up -d
@@ -62,7 +62,13 @@ This will synchronize the predefined example schema containing the `Org` table t
 yarn push
 ```
 
-### 7. **Browse & use the API**:
+### 7. **Start the server**:
+
+```bash
+yarn start
+```
+
+### 8. **Browse & use the API**:
 
 Tada! you have a fully working GraphQL API under http://localhost:5000/graphql
 
