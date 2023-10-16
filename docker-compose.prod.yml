@@ -14,12 +14,23 @@ services:
       - "max_replication_slots=10"
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: change-me
       POSTGRES_DB: postgres
     volumes:
       - postgres-data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "2345:5432"
 
+  riwaq-pg:
+    image: dmed/riwaq-pg-server
+    container_name: riwaq-pg
+    environment:
+      DATABASE_URL: postgres://postgres:change-me@postgres:2345/postgres
+      DB_SCHEMA: public
+      JWKS_URI: https://auth.mahd.cloud/oauth/v2/keys
+    ports:
+      - "5000:5000"
+    depends_on:
+      - postgres
 volumes:
   postgres-data:
