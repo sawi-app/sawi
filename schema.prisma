@@ -12,3 +12,17 @@ model Org {
   slug       String   @unique
   user_roles String[] // [ "username:role" ]
 }
+
+model Address {
+  id       String  @id
+  refer_to String
+  street   String?
+  street2  String?
+  city     String?
+  state    String?
+  zip_code String?
+  country  String?
+  lat      String?
+  lng      String?
+}
+
