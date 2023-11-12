@@ -6,13 +6,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Org {
-  id         String   @id
-  name       String
-  slug       String   @unique
-  user_roles String[] // [ "username:role" ]
-}
-
 model Address {
   id       String  @id
   refer_to String
@@ -24,5 +17,17 @@ model Address {
   country  String?
   lat      String?
   lng      String?
+}
+
+
+model Organisation {
+  id                 String  @id
+  reference          String
+  name               String?
+  logo               String?
+  commercial_register String?
+  tax_id_number      String?
+  customs_code       String?
+  tel                String[] 
 }
 
