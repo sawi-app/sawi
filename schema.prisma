@@ -29,5 +29,15 @@ model Organisation {
   tax_id_number      String?
   customs_code       String?
   tel                String[] 
+
+  establishments Establishment[]
 }
 
+model Establishment {
+  id           String   @id
+  id_org       String   @map("id_org") 
+  referencee   String   @unique
+  designation  String?
+  currency     String?
+  organisation Organisation @relation(fields: [id_org], references: [id])
+}
