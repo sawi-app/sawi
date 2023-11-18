@@ -29,12 +29,12 @@ model Organisation {
   tax_id_number      String?
   customs_code       String?
   tel                String[] 
-
   establishments Establishment[]
   deposits    Deposit[]
   locations    Location[]
   contactTypes  ContactType[]
   banks        Bank[]
+  bankAccounts  BankAccount[]
 }
 
 model Establishment {
@@ -43,12 +43,11 @@ model Establishment {
   referencee   String   @unique
   designation  String?
   currency     String?
-
   organisation Organisation @relation(fields: [id_org], references: [id])
-
   deposits     Deposit[]
   locations    Location[]
   contactTypes ContactType[]
+  bankAccounts  BankAccount[]
 }
 
 model Deposit {
@@ -90,8 +89,21 @@ model ContactType {
 
 model Bank {
   id           String      @id
-  id_org       String      @map("id_org") // Rename the column to match your database column name
+  id_org       String      @map("id_org") 
   reference    String      @unique
   designation  String?
   organisation Organisation @relation(fields: [id_org], references: [id])
+  bankAccounts  BankAccount[]
+}
+
+model BankAccount {
+  id           String      @id
+  id_org       String      @map("id_org")
+  id_etb       String      @map("id_etb") 
+  id_bank      String      @map("id_bank")
+  reference    String      @unique
+  RIB          String
+  organisation Organisation @relation(fields: [id_org], references: [id])
+  establishment Establishment @relation(fields: [id_etb], references: [id])
+  bank         Bank         @relation(fields: [id_bank], references: [id])
 }
