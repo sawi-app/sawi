@@ -38,6 +38,7 @@ model Organisation {
   taxes         Tax[]
   vats         Vat[]
   currencies    Currency[]
+  currencyCoefficients CurrencyCoefficient[]
 }
 
 model Establishment {
@@ -54,6 +55,7 @@ model Establishment {
   taxes         Tax[]
   vats         Vat[]
   currencies    Currency[]
+  currencyCoefficients CurrencyCoefficient[]
 }
 
 model Deposit {
@@ -147,4 +149,21 @@ model Currency {
   symbol       String?
   organisation Organisation @relation(fields: [id_org], references: [id])
   establishment Establishment @relation(fields: [id_etb], references: [id])
+  currencyCoefficientsFrom CurrencyCoefficient[] @relation("CurrencyFrom")
+  currencyCoefficientsTo   CurrencyCoefficient[] @relation("CurrencyTo")
+}
+
+model CurrencyCoefficient {
+  id                 String      @id
+  id_org             String      @map("id_org") 
+  id_etb             String      @map("id_etb") 
+  reference          String      @unique
+  designation        String?
+  value              Float?
+  id_currency_from   String      @map("id_currency_from") 
+  id_currency_to     String      @map("id_currency_to") 
+  organisation       Organisation @relation(fields: [id_org], references: [id])
+  establishment      Establishment @relation(fields: [id_etb], references: [id])
+  currency_from      Currency     @relation("CurrencyFrom", fields: [id_currency_from], references: [id])
+  currency_to        Currency     @relation("CurrencyTo", fields: [id_currency_to], references: [id])
 }
