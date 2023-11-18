@@ -48,6 +48,7 @@ model Organisation {
   unitCoefficients    UnitCoefficient[]
   articles            Article[]
   variantProps        VariantProps[]
+  lotCompositions     LotComposition[]
 }
 
 model Establishment {
@@ -74,6 +75,7 @@ model Establishment {
   unitCoefficients    UnitCoefficient[]
   articles            Article[]
   variantProps        VariantProps[]
+  lotCompositions     LotComposition[]
 }
 
 model Deposit {
@@ -362,6 +364,7 @@ model Article {
   saleUnit            Unit                 @relation("ArticlesSold", fields: [sale_unit], references: [id])
   purchaseUnit        Unit                 @relation("ArticlesPurchased", fields: [purchase_unit], references: [id])
   subArticleProps     VariantProps[]
+  lotCompositions     LotComposition[]
 }
 
 enum BuySell {
@@ -389,9 +392,9 @@ enum ArticleManagement {
 
 model VariantProps {
   id                  String               @id
-  id_org              String               @map("id_org") // Rename the column to match your database column name
-  id_etb              String               @map("id_etb") // Rename the column to match your database column name
-  id_sub_article      String               @map("id_sub_article") // Rename the column to match your database column name
+  id_org              String               @map("id_org") 
+  id_etb              String               @map("id_etb") 
+  id_sub_article      String               @map("id_sub_article") 
   reference           String               @unique
   designation         String?
   type                VariantType
@@ -407,4 +410,17 @@ enum VariantType {
   SIZE
   NUMBER
   TEXT
+}
+
+model LotComposition {
+  id                  String               @id
+  id_org              String               @map("id_org") 
+  id_etb              String               @map("id_etb") 
+  id_composant        String               @map("id_composant") 
+  reference           String               @unique
+  designation         String?
+
+  organisation        Organisation         @relation(fields: [id_org], references: [id])
+  establishment       Establishment        @relation(fields: [id_etb], references: [id])
+  composant           Article              @relation(fields: [id_composant], references: [id])
 }
