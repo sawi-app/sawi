@@ -32,6 +32,7 @@ model Organisation {
 
   establishments Establishment[]
   deposits    Deposit[]
+  locations    Location[]
 }
 
 model Establishment {
@@ -40,18 +41,36 @@ model Establishment {
   referencee   String   @unique
   designation  String?
   currency     String?
+
   organisation Organisation @relation(fields: [id_org], references: [id])
 
   deposits     Deposit[]
+  locations    Location[]
 }
 
 model Deposit {
   id           String      @id
-  id_org       String      @map("id_org") // Rename the column to match your database column name
-  id_etb       String      @map("id_etb") // Rename the column to match your database column name
+  id_org       String      @map("id_org") 
+  id_etb       String      @map("id_etb") 
   reference    String      @unique
   designation  String?
   type         String
+
   organisation Organisation @relation(fields: [id_org], references: [id])
   establishment Establishment @relation(fields: [id_etb], references: [id])
+
+  locations    Location[]
+}
+
+model Location {
+  id           String      @id
+  id_org       String      @map("id_org")
+  id_etb       String      @map("id_etb") 
+  id_depo      String      @map("id_depo") 
+  reference    String      @unique
+  designation  String?
+  volume       String?
+  organisation Organisation @relation(fields: [id_org], references: [id])
+  establishment Establishment @relation(fields: [id_etb], references: [id])
+  deposit      Deposit     @relation(fields: [id_depo], references: [id])
 }
