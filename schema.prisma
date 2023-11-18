@@ -43,6 +43,7 @@ model Organisation {
   contacts            Contact[]
   providers           Provider[]
   clients             Client[]
+  categories          Category[]
 }
 
 model Establishment {
@@ -64,6 +65,7 @@ model Establishment {
   contacts            Contact[]
   providers           Provider[]
   clients             Client[]
+  categories          Category[]
 }
 
 model Deposit {
@@ -252,10 +254,10 @@ model Provider {
 
 model Client {
   id                  String               @id
-  id_org              String               @map("id_org") // Rename the column to match your database column name
-  id_etb              String               @map("id_etb") // Rename the column to match your database column name
-  id_vat              String               @map("id_vat") // Rename the column to match your database column name
-  id_tax              String               @map("id_tax") // Rename the column to match your database column name
+  id_org              String               @map("id_org")
+  id_etb              String               @map("id_etb") 
+  id_vat              String               @map("id_vat") 
+  id_tax              String               @map("id_tax") 
   id_bank_account     String               @map("id_bank_account") // Rename the column to match your database column name
   reference           String               @unique
   first_name          String?
@@ -278,4 +280,17 @@ model Client {
 enum Nature {
   COMPANY
   INDIVIDUAL
+}
+
+model Category {
+  id                  String               @id
+  id_org              String               @map("id_org")
+  id_etb              String               @map("id_etb")
+  id_parent           String?
+  reference           String               @unique
+  designation         String?
+  organisation        Organisation         @relation(fields: [id_org], references: [id])
+  establishment       Establishment        @relation(fields: [id_etb], references: [id])
+  parent              Category?            @relation("ChildCategories", fields: [id_parent], references: [id])
+  childCategories     Category[]           @relation("ChildCategories")
 }
