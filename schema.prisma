@@ -39,6 +39,7 @@ model Organisation {
   vats         Vat[]
   currencies    Currency[]
   currencyCoefficients CurrencyCoefficient[]
+  discounts           Discount[]
 }
 
 model Establishment {
@@ -56,6 +57,7 @@ model Establishment {
   vats         Vat[]
   currencies    Currency[]
   currencyCoefficients CurrencyCoefficient[]
+  discounts           Discount[]
 }
 
 model Deposit {
@@ -166,4 +168,17 @@ model CurrencyCoefficient {
   establishment      Establishment @relation(fields: [id_etb], references: [id])
   currency_from      Currency     @relation("CurrencyFrom", fields: [id_currency_from], references: [id])
   currency_to        Currency     @relation("CurrencyTo", fields: [id_currency_to], references: [id])
+}
+
+model Discount {
+  id                  String               @id
+  id_org              String               @map("id_org") // Rename the column to match your database column name
+  id_etb              String               @map("id_etb") // Rename the column to match your database column name
+  reference           String               @unique
+  designation         String?
+  value               Float?
+  effect_date         DateTime
+  end_date            DateTime
+  organisation        Organisation         @relation(fields: [id_org], references: [id])
+  establishment       Establishment        @relation(fields: [id_etb], references: [id])
 }
