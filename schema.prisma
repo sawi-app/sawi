@@ -41,7 +41,8 @@ model Organisation {
   currencyCoefficients CurrencyCoefficient[]
   discounts           Discount[]
   contacts            Contact[]
-  providers            Provider[]
+  providers           Provider[]
+  clients             Client[]
 }
 
 model Establishment {
@@ -61,7 +62,8 @@ model Establishment {
   currencyCoefficients CurrencyCoefficient[]
   discounts           Discount[]
   contacts            Contact[]
-  providers            Provider[]
+  providers           Provider[]
+  clients             Client[]
 }
 
 model Deposit {
@@ -122,7 +124,8 @@ model BankAccount {
   establishment Establishment @relation(fields: [id_etb], references: [id])
   bank         Bank         @relation(fields: [id_bank], references: [id])
   contacts            Contact[]
-  providers            Provider[]
+  providers           Provider[]
+  clients             Client[]
 }
 
 model Tax {
@@ -135,7 +138,8 @@ model Tax {
   tax_type     String?
   organisation Organisation @relation(fields: [id_org], references: [id])
   establishment Establishment @relation(fields: [id_etb], references: [id])
-  providers            Provider[]
+  providers           Provider[]
+  clients             Client[]
 }
 
 
@@ -149,7 +153,8 @@ model Vat {
   organisation Organisation @relation(fields: [id_org], references: [id])
   establishment Establishment @relation(fields: [id_etb], references: [id])
   contacts            Contact[]
-  providers            Provider[]
+  providers           Provider[]
+  clients             Client[]
 }
 
 model Currency {
@@ -227,6 +232,31 @@ model Provider {
   id_vat              String               @map("id_vat") 
   id_tax              String               @map("id_tax") 
   id_bank_account     String               @map("id_bank_account")
+  reference           String               @unique
+  first_name          String?
+  last_name           String?
+  company_name        String?
+  email               String?
+  tel                 String?
+  personal_id_type    String?
+  personal_id         String?
+  tax_id_number       String?
+  customs_code        String?
+  nature              Nature
+  organisation        Organisation         @relation(fields: [id_org], references: [id])
+  establishment       Establishment        @relation(fields: [id_etb], references: [id])
+  vat                 Vat                  @relation(fields: [id_vat], references: [id])
+  tax                 Tax                  @relation(fields: [id_tax], references: [id])
+  bankAccount         BankAccount           @relation(fields: [id_bank_account], references: [id])
+}
+
+model Client {
+  id                  String               @id
+  id_org              String               @map("id_org") // Rename the column to match your database column name
+  id_etb              String               @map("id_etb") // Rename the column to match your database column name
+  id_vat              String               @map("id_vat") // Rename the column to match your database column name
+  id_tax              String               @map("id_tax") // Rename the column to match your database column name
+  id_bank_account     String               @map("id_bank_account") // Rename the column to match your database column name
   reference           String               @unique
   first_name          String?
   last_name           String?
