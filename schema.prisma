@@ -46,6 +46,7 @@ model Organisation {
   categories          Category[]
   units               Unit[]
   unitCoefficients    UnitCoefficient[]
+  articles            Article[]
 }
 
 model Establishment {
@@ -70,6 +71,7 @@ model Establishment {
   categories          Category[]
   units               Unit[]
   unitCoefficients    UnitCoefficient[]
+  articles            Article[]
 }
 
 model Deposit {
@@ -297,6 +299,7 @@ model Category {
   establishment       Establishment        @relation(fields: [id_etb], references: [id])
   parent              Category?            @relation("ChildCategories", fields: [id_parent], references: [id])
   childCategories     Category[]           @relation("ChildCategories")
+  articles            Article[]
 }
 
 model Unit {
@@ -309,6 +312,8 @@ model Unit {
   establishment       Establishment        @relation(fields: [id_etb], references: [id])
   unitCoefficientsFrom UnitCoefficient[] @relation("UnitCoefficientsFrom")
   unitCoefficientsTo   UnitCoefficient[] @relation("UnitCoefficientsTo")
+  articlesSold        Article[] @relation("ArticlesSold")
+  articlesPurchased   Article[] @relation("ArticlesPurchased")
 }
 
 
@@ -325,4 +330,56 @@ model UnitCoefficient {
   establishment       Establishment        @relation(fields: [id_etb], references: [id])
   unitFrom            Unit                 @relation("UnitCoefficientsFrom", fields: [unit_from], references: [id])
   unitTo              Unit                 @relation("UnitCoefficientsTo", fields: [unit_to], references: [id])
+}
+
+model Article {
+  id                  String               @id
+  id_org              String               @map("id_org") 
+  id_etb              String               @map("id_etb") 
+  id_category         String               @map("id_category") 
+  id_sub_article      String?
+  is_sub_article      Boolean
+  reference           String               @unique
+  designation         String?
+  EAN                 String
+  serial_number       String
+  sale_unit           String               @map("sale_unit") 
+  purchase_unit       String               @map("purchase_unit") 
+  buy_sell            BuySell[]
+  picking             Picking
+  is_service          Boolean
+  stock_management    StockManagement
+  volume              String
+  weight              Float
+  article_management  ArticleManagement
+  media               String
+
+  organisation        Organisation         @relation(fields: [id_org], references: [id])
+  establishment       Establishment        @relation(fields: [id_etb], references: [id])
+  category            Category             @relation(fields: [id_category], references: [id])
+  saleUnit            Unit                 @relation("ArticlesSold", fields: [sale_unit], references: [id])
+  purchaseUnit        Unit                 @relation("ArticlesPurchased", fields: [purchase_unit], references: [id])
+}
+
+enum BuySell {
+  CAN_BE_PURCHASED
+  CAN_BE_SOLD
+  CAN_BE_MANUFACTURED
+}
+
+enum Picking {
+  FIFO
+  LIFO
+  FEFO
+}
+
+enum StockManagement {
+  IN_STOCK
+  OUT_OF_STOCK
+}
+
+enum ArticleManagement {
+  BY_LOT
+  BY_SERIAL_NUMBER
+  BY_EAN
 }
