@@ -47,6 +47,7 @@ model Organisation {
   units               Unit[]
   unitCoefficients    UnitCoefficient[]
   articles            Article[]
+  variantProps        VariantProps[]
 }
 
 model Establishment {
@@ -72,6 +73,7 @@ model Establishment {
   units               Unit[]
   unitCoefficients    UnitCoefficient[]
   articles            Article[]
+  variantProps        VariantProps[]
 }
 
 model Deposit {
@@ -359,6 +361,7 @@ model Article {
   category            Category             @relation(fields: [id_category], references: [id])
   saleUnit            Unit                 @relation("ArticlesSold", fields: [sale_unit], references: [id])
   purchaseUnit        Unit                 @relation("ArticlesPurchased", fields: [purchase_unit], references: [id])
+  subArticleProps     VariantProps[]
 }
 
 enum BuySell {
@@ -382,4 +385,26 @@ enum ArticleManagement {
   BY_LOT
   BY_SERIAL_NUMBER
   BY_EAN
+}
+
+model VariantProps {
+  id                  String               @id
+  id_org              String               @map("id_org") // Rename the column to match your database column name
+  id_etb              String               @map("id_etb") // Rename the column to match your database column name
+  id_sub_article      String               @map("id_sub_article") // Rename the column to match your database column name
+  reference           String               @unique
+  designation         String?
+  type                VariantType
+  value               String
+
+  organisation        Organisation         @relation(fields: [id_org], references: [id])
+  establishment       Establishment        @relation(fields: [id_etb], references: [id])
+  subArticle          Article              @relation(fields: [id_sub_article], references: [id])
+}
+
+enum VariantType {
+  COLOR
+  SIZE
+  NUMBER
+  TEXT
 }
