@@ -37,6 +37,7 @@ model Organisation {
   bankAccounts  BankAccount[]
   taxes         Tax[]
   vats         Vat[]
+  currencies    Currency[]
 }
 
 model Establishment {
@@ -52,6 +53,7 @@ model Establishment {
   bankAccounts  BankAccount[]
   taxes         Tax[]
   vats         Vat[]
+  currencies    Currency[]
 }
 
 model Deposit {
@@ -132,6 +134,17 @@ model Vat {
   reference    String      @unique
   designation  String?
   value        Float?
+  organisation Organisation @relation(fields: [id_org], references: [id])
+  establishment Establishment @relation(fields: [id_etb], references: [id])
+}
+
+model Currency {
+  id           String      @id
+  id_org       String      @map("id_org") 
+  id_etb       String      @map("id_etb") 
+  reference    String      @unique
+  designation  String?
+  symbol       String?
   organisation Organisation @relation(fields: [id_org], references: [id])
   establishment Establishment @relation(fields: [id_etb], references: [id])
 }
