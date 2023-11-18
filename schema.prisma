@@ -35,6 +35,7 @@ model Organisation {
   contactTypes  ContactType[]
   banks        Bank[]
   bankAccounts  BankAccount[]
+  taxes         Tax[]
 }
 
 model Establishment {
@@ -48,6 +49,7 @@ model Establishment {
   locations    Location[]
   contactTypes ContactType[]
   bankAccounts  BankAccount[]
+  taxes         Tax[]
 }
 
 model Deposit {
@@ -106,4 +108,16 @@ model BankAccount {
   organisation Organisation @relation(fields: [id_org], references: [id])
   establishment Establishment @relation(fields: [id_etb], references: [id])
   bank         Bank         @relation(fields: [id_bank], references: [id])
+}
+
+model Tax {
+  id           String      @id
+  id_org       String      @map("id_org")
+  id_etb       String      @map("id_etb")
+  reference    String      @unique
+  designation  String?
+  value        Float?
+  tax_type     String?
+  organisation Organisation @relation(fields: [id_org], references: [id])
+  establishment Establishment @relation(fields: [id_etb], references: [id])
 }
