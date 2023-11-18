@@ -45,6 +45,7 @@ model Organisation {
   clients             Client[]
   categories          Category[]
   units               Unit[]
+  unitCoefficients    UnitCoefficient[]
 }
 
 model Establishment {
@@ -68,6 +69,7 @@ model Establishment {
   clients             Client[]
   categories          Category[]
   units               Unit[]
+  unitCoefficients    UnitCoefficient[]
 }
 
 model Deposit {
@@ -260,7 +262,7 @@ model Client {
   id_etb              String               @map("id_etb") 
   id_vat              String               @map("id_vat") 
   id_tax              String               @map("id_tax") 
-  id_bank_account     String               @map("id_bank_account") // Rename the column to match your database column name
+  id_bank_account     String               @map("id_bank_account") 
   reference           String               @unique
   first_name          String?
   last_name           String?
@@ -299,10 +301,28 @@ model Category {
 
 model Unit {
   id                  String               @id
-  id_org              String               @map("id_org") // Rename the column to match your database column name
-  id_etb              String               @map("id_etb") // Rename the column to match your database column name
+  id_org              String               @map("id_org") 
+  id_etb              String               @map("id_etb") 
   reference           String               @unique
   designation         String?
   organisation        Organisation         @relation(fields: [id_org], references: [id])
   establishment       Establishment        @relation(fields: [id_etb], references: [id])
+  unitCoefficientsFrom UnitCoefficient[] @relation("UnitCoefficientsFrom")
+  unitCoefficientsTo   UnitCoefficient[] @relation("UnitCoefficientsTo")
+}
+
+
+model UnitCoefficient {
+  id                  String               @id
+  id_org              String               @map("id_org") 
+  id_etb              String               @map("id_etb") 
+  reference           String               @unique
+  designation         String?
+  unit_from           String               @map("unit_from")
+  unit_to             String               @map("unit_to")
+  value               Float
+  organisation        Organisation         @relation(fields: [id_org], references: [id])
+  establishment       Establishment        @relation(fields: [id_etb], references: [id])
+  unitFrom            Unit                 @relation("UnitCoefficientsFrom", fields: [unit_from], references: [id])
+  unitTo              Unit                 @relation("UnitCoefficientsTo", fields: [unit_to], references: [id])
 }
