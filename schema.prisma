@@ -40,6 +40,7 @@ model Organisation {
   currencies    Currency[]
   currencyCoefficients CurrencyCoefficient[]
   discounts           Discount[]
+  contacts            Contact[]
 }
 
 model Establishment {
@@ -58,6 +59,7 @@ model Establishment {
   currencies    Currency[]
   currencyCoefficients CurrencyCoefficient[]
   discounts           Discount[]
+  contacts            Contact[]
 }
 
 model Deposit {
@@ -95,6 +97,7 @@ model ContactType {
   designation  String?
   organisation Organisation @relation(fields: [id_org], references: [id])
   establishment Establishment @relation(fields: [id_etb], references: [id])
+  contacts            Contact[]
 }
 
 model Bank {
@@ -116,6 +119,7 @@ model BankAccount {
   organisation Organisation @relation(fields: [id_org], references: [id])
   establishment Establishment @relation(fields: [id_etb], references: [id])
   bank         Bank         @relation(fields: [id_bank], references: [id])
+  contacts            Contact[]
 }
 
 model Tax {
@@ -140,6 +144,7 @@ model Vat {
   value        Float?
   organisation Organisation @relation(fields: [id_org], references: [id])
   establishment Establishment @relation(fields: [id_etb], references: [id])
+  contacts            Contact[]
 }
 
 model Currency {
@@ -172,8 +177,8 @@ model CurrencyCoefficient {
 
 model Discount {
   id                  String               @id
-  id_org              String               @map("id_org") // Rename the column to match your database column name
-  id_etb              String               @map("id_etb") // Rename the column to match your database column name
+  id_org              String               @map("id_org") 
+  id_etb              String               @map("id_etb") 
   reference           String               @unique
   designation         String?
   value               Float?
@@ -181,4 +186,35 @@ model Discount {
   end_date            DateTime
   organisation        Organisation         @relation(fields: [id_org], references: [id])
   establishment       Establishment        @relation(fields: [id_etb], references: [id])
+}
+
+
+model Contact {
+  id                  String               @id
+  id_org              String               @map("id_org") 
+  id_etb              String               @map("id_etb") 
+  id_type_contact     String               @map("id_type_contact") 
+  id_vat              String               @map("id_vat") 
+  id_bank_account     String               @map("id_bank_account") 
+  reference           String               @unique
+  first_name          String?
+  last_name           String?
+  company_name        String?
+  email               String?
+  tel                 String?
+  personal_id_type    String?
+  personal_id         String?
+  tax_id_number       String?
+  customs_code        String?
+  nature              Nature
+  organisation        Organisation         @relation(fields: [id_org], references: [id])
+  establishment       Establishment        @relation(fields: [id_etb], references: [id])
+  contactType         ContactType           @relation(fields: [id_type_contact], references: [id])
+  vat                 Vat                  @relation(fields: [id_vat], references: [id])
+  bankAccount         BankAccount           @relation(fields: [id_bank_account], references: [id])
+}
+
+enum Nature {
+  COMPANY
+  INDIVIDUAL
 }
