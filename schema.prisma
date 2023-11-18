@@ -33,7 +33,8 @@ model Organisation {
   establishments Establishment[]
   deposits    Deposit[]
   locations    Location[]
-   contactTypes  ContactType[]
+  contactTypes  ContactType[]
+  banks        Bank[]
 }
 
 model Establishment {
@@ -85,4 +86,12 @@ model ContactType {
   designation  String?
   organisation Organisation @relation(fields: [id_org], references: [id])
   establishment Establishment @relation(fields: [id_etb], references: [id])
+}
+
+model Bank {
+  id           String      @id
+  id_org       String      @map("id_org") // Rename the column to match your database column name
+  reference    String      @unique
+  designation  String?
+  organisation Organisation @relation(fields: [id_org], references: [id])
 }
