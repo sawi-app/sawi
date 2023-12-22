@@ -1,6 +1,7 @@
 generator client {
   provider = "prisma-client-js"
 }
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -19,274 +20,271 @@ model Address {
   lng      String?
 }
 
-
 model Organisation {
-  id                 String  @id
-  reference          String
-  name               String?
-  logo               String?
-  commercial_register String?
-  tax_id_number      String?
-  customs_code       String?
-  tel                String[] 
-  establishments Establishment[]
-  deposits    Deposit[]
-  locations    Location[]
-  contactTypes  ContactType[]
-  banks        Bank[]
-  bankAccounts  BankAccount[]
-  taxes         Tax[]
-  vats         Vat[]
-  currencies    Currency[]
+  id                   String                @id
+  reference            String
+  name                 String?
+  logo                 String?
+  commercial_register  String?
+  tax_id_number        String?
+  customs_code         String?
+  phones               String[]
+  ownerId              String
+  establishments       Establishment[]
+  deposits             Deposit[]
+  locations            Location[]
+  contactTypes         ContactType[]
+  banks                Bank[]
+  bankAccounts         BankAccount[]
+  taxes                Tax[]
+  vats                 Vat[]
+  currencies           Currency[]
   currencyCoefficients CurrencyCoefficient[]
-  discounts           Discount[]
-  contacts            Contact[]
-  providers           Provider[]
-  clients             Client[]
-  categories          Category[]
-  units               Unit[]
-  unitCoefficients    UnitCoefficient[]
-  articles            Article[]
-  variantProps        VariantProps[]
-  lotCompositions     LotComposition[]
-  stockpiles          Stockpile[]
+  discounts            Discount[]
+  contacts             Contact[]
+  providers            Provider[]
+  clients              Client[]
+  categories           Category[]
+  units                Unit[]
+  unitCoefficients     UnitCoefficient[]
+  articles             Article[]
+  variantProps         VariantProps[]
+  lotCompositions      LotComposition[]
+  stockpiles           Stockpile[]
 }
 
 model Establishment {
-  id           String   @id
-  id_org       String   @map("id_org") 
-  referencee   String   @unique
-  designation  String?
-  currency     String?
-  organisation Organisation @relation(fields: [id_org], references: [id])
-  deposits     Deposit[]
-  locations    Location[]
-  contactTypes ContactType[]
-  bankAccounts  BankAccount[]
-  taxes         Tax[]
-  vats         Vat[]
-  currencies    Currency[]
+  id                   String                @id
+  id_org               String                @map("id_org")
+  referencee           String                @unique
+  designation          String?
+  currency             String?
+  organisation         Organisation          @relation(fields: [id_org], references: [id])
+  deposits             Deposit[]
+  locations            Location[]
+  contactTypes         ContactType[]
+  bankAccounts         BankAccount[]
+  taxes                Tax[]
+  vats                 Vat[]
+  currencies           Currency[]
   currencyCoefficients CurrencyCoefficient[]
-  discounts           Discount[]
-  contacts            Contact[]
-  providers           Provider[]
-  clients             Client[]
-  categories          Category[]
-  units               Unit[]
-  unitCoefficients    UnitCoefficient[]
-  articles            Article[]
-  variantProps        VariantProps[]
-  lotCompositions     LotComposition[]
-  stockpiles          Stockpile[]
+  discounts            Discount[]
+  contacts             Contact[]
+  providers            Provider[]
+  clients              Client[]
+  categories           Category[]
+  units                Unit[]
+  unitCoefficients     UnitCoefficient[]
+  articles             Article[]
+  variantProps         VariantProps[]
+  lotCompositions      LotComposition[]
+  stockpiles           Stockpile[]
 }
 
 model Deposit {
-  id           String      @id
-  id_org       String      @map("id_org") 
-  id_etb       String      @map("id_etb") 
-  reference    String      @unique
-  designation  String?
-  type         String
-  organisation Organisation @relation(fields: [id_org], references: [id])
+  id            String        @id
+  id_org        String        @map("id_org")
+  id_etb        String        @map("id_etb")
+  reference     String        @unique
+  designation   String?
+  type          String
+  organisation  Organisation  @relation(fields: [id_org], references: [id])
   establishment Establishment @relation(fields: [id_etb], references: [id])
-  locations    Location[]
-  stockpiles          Stockpile[]
+  locations     Location[]
+  stockpiles    Stockpile[]
 }
 
 model Location {
-  id           String      @id
-  id_org       String      @map("id_org")
-  id_etb       String      @map("id_etb") 
-  id_depo      String      @map("id_depo") 
-  reference    String      @unique
-  designation  String?
-  volume       String?
-  organisation Organisation @relation(fields: [id_org], references: [id])
+  id            String        @id
+  id_org        String        @map("id_org")
+  id_etb        String        @map("id_etb")
+  id_depo       String        @map("id_depo")
+  reference     String        @unique
+  designation   String?
+  volume        String?
+  organisation  Organisation  @relation(fields: [id_org], references: [id])
   establishment Establishment @relation(fields: [id_etb], references: [id])
-  deposit      Deposit     @relation(fields: [id_depo], references: [id])
-  stockpiles          Stockpile[]
+  deposit       Deposit       @relation(fields: [id_depo], references: [id])
+  stockpiles    Stockpile[]
 }
 
 model ContactType {
-  id           String      @id
-  id_org       String      @map("id_org")
-  id_etb       String      @map("id_etb") 
-  reference    String      @unique
-  designation  String?
-  organisation Organisation @relation(fields: [id_org], references: [id])
+  id            String        @id
+  id_org        String        @map("id_org")
+  id_etb        String        @map("id_etb")
+  reference     String        @unique
+  designation   String?
+  organisation  Organisation  @relation(fields: [id_org], references: [id])
   establishment Establishment @relation(fields: [id_etb], references: [id])
-  contacts            Contact[]
+  contacts      Contact[]
 }
 
 model Bank {
-  id           String      @id
-  id_org       String      @map("id_org") 
-  reference    String      @unique
+  id           String        @id
+  id_org       String        @map("id_org")
+  reference    String        @unique
   designation  String?
-  organisation Organisation @relation(fields: [id_org], references: [id])
-  bankAccounts  BankAccount[]
+  organisation Organisation  @relation(fields: [id_org], references: [id])
+  bankAccounts BankAccount[]
 }
 
 model BankAccount {
-  id           String      @id
-  id_org       String      @map("id_org")
-  id_etb       String      @map("id_etb") 
-  id_bank      String      @map("id_bank")
-  reference    String      @unique
-  RIB          String
-  organisation Organisation @relation(fields: [id_org], references: [id])
+  id            String        @id
+  id_org        String        @map("id_org")
+  id_etb        String        @map("id_etb")
+  id_bank       String        @map("id_bank")
+  reference     String        @unique
+  RIB           String
+  organisation  Organisation  @relation(fields: [id_org], references: [id])
   establishment Establishment @relation(fields: [id_etb], references: [id])
-  bank         Bank         @relation(fields: [id_bank], references: [id])
-  contacts            Contact[]
-  providers           Provider[]
-  clients             Client[]
+  bank          Bank          @relation(fields: [id_bank], references: [id])
+  contacts      Contact[]
+  providers     Provider[]
+  clients       Client[]
 }
 
 model Tax {
-  id           String      @id
-  id_org       String      @map("id_org")
-  id_etb       String      @map("id_etb")
-  reference    String      @unique
-  designation  String?
-  value        Float?
-  tax_type     String?
-  organisation Organisation @relation(fields: [id_org], references: [id])
+  id            String        @id
+  id_org        String        @map("id_org")
+  id_etb        String        @map("id_etb")
+  reference     String        @unique
+  designation   String?
+  value         Float?
+  tax_type      String?
+  organisation  Organisation  @relation(fields: [id_org], references: [id])
   establishment Establishment @relation(fields: [id_etb], references: [id])
-  providers           Provider[]
-  clients             Client[]
+  providers     Provider[]
+  clients       Client[]
 }
 
-
 model Vat {
-  id           String      @id
-  id_org       String      @map("id_org") 
-  id_etb       String      @map("id_etb") 
-  reference    String      @unique
-  designation  String?
-  value        Float?
-  organisation Organisation @relation(fields: [id_org], references: [id])
+  id            String        @id
+  id_org        String        @map("id_org")
+  id_etb        String        @map("id_etb")
+  reference     String        @unique
+  designation   String?
+  value         Float?
+  organisation  Organisation  @relation(fields: [id_org], references: [id])
   establishment Establishment @relation(fields: [id_etb], references: [id])
-  contacts            Contact[]
-  providers           Provider[]
-  clients             Client[]
+  contacts      Contact[]
+  providers     Provider[]
+  clients       Client[]
 }
 
 model Currency {
-  id           String      @id
-  id_org       String      @map("id_org") 
-  id_etb       String      @map("id_etb") 
-  reference    String      @unique
-  designation  String?
-  symbol       String?
-  organisation Organisation @relation(fields: [id_org], references: [id])
-  establishment Establishment @relation(fields: [id_etb], references: [id])
+  id                       String                @id
+  id_org                   String                @map("id_org")
+  id_etb                   String                @map("id_etb")
+  reference                String                @unique
+  designation              String?
+  symbol                   String?
+  organisation             Organisation          @relation(fields: [id_org], references: [id])
+  establishment            Establishment         @relation(fields: [id_etb], references: [id])
   currencyCoefficientsFrom CurrencyCoefficient[] @relation("CurrencyFrom")
   currencyCoefficientsTo   CurrencyCoefficient[] @relation("CurrencyTo")
 }
 
 model CurrencyCoefficient {
-  id                 String      @id
-  id_org             String      @map("id_org") 
-  id_etb             String      @map("id_etb") 
-  reference          String      @unique
-  designation        String?
-  value              Float?
-  id_currency_from   String      @map("id_currency_from") 
-  id_currency_to     String      @map("id_currency_to") 
-  organisation       Organisation @relation(fields: [id_org], references: [id])
-  establishment      Establishment @relation(fields: [id_etb], references: [id])
-  currency_from      Currency     @relation("CurrencyFrom", fields: [id_currency_from], references: [id])
-  currency_to        Currency     @relation("CurrencyTo", fields: [id_currency_to], references: [id])
+  id               String        @id
+  id_org           String        @map("id_org")
+  id_etb           String        @map("id_etb")
+  reference        String        @unique
+  designation      String?
+  value            Float?
+  id_currency_from String        @map("id_currency_from")
+  id_currency_to   String        @map("id_currency_to")
+  organisation     Organisation  @relation(fields: [id_org], references: [id])
+  establishment    Establishment @relation(fields: [id_etb], references: [id])
+  currency_from    Currency      @relation("CurrencyFrom", fields: [id_currency_from], references: [id])
+  currency_to      Currency      @relation("CurrencyTo", fields: [id_currency_to], references: [id])
 }
 
 model Discount {
-  id                  String               @id
-  id_org              String               @map("id_org") 
-  id_etb              String               @map("id_etb") 
-  reference           String               @unique
-  designation         String?
-  value               Float?
-  effect_date         DateTime
-  end_date            DateTime
-  organisation        Organisation         @relation(fields: [id_org], references: [id])
-  establishment       Establishment        @relation(fields: [id_etb], references: [id])
+  id            String        @id
+  id_org        String        @map("id_org")
+  id_etb        String        @map("id_etb")
+  reference     String        @unique
+  designation   String?
+  value         Float?
+  effect_date   DateTime
+  end_date      DateTime
+  organisation  Organisation  @relation(fields: [id_org], references: [id])
+  establishment Establishment @relation(fields: [id_etb], references: [id])
 }
-
 
 model Contact {
-  id                  String               @id
-  id_org              String               @map("id_org") 
-  id_etb              String               @map("id_etb") 
-  id_type_contact     String               @map("id_type_contact") 
-  id_vat              String               @map("id_vat") 
-  id_bank_account     String               @map("id_bank_account") 
-  reference           String               @unique
-  first_name          String?
-  last_name           String?
-  company_name        String?
-  email               String?
-  tel                 String?
-  personal_id_type    String?
-  personal_id         String?
-  tax_id_number       String?
-  customs_code        String?
-  nature              Nature
-  organisation        Organisation         @relation(fields: [id_org], references: [id])
-  establishment       Establishment        @relation(fields: [id_etb], references: [id])
-  contactType         ContactType           @relation(fields: [id_type_contact], references: [id])
-  vat                 Vat                  @relation(fields: [id_vat], references: [id])
-  bankAccount         BankAccount           @relation(fields: [id_bank_account], references: [id])
+  id               String        @id
+  id_org           String        @map("id_org")
+  id_etb           String        @map("id_etb")
+  id_type_contact  String        @map("id_type_contact")
+  id_vat           String        @map("id_vat")
+  id_bank_account  String        @map("id_bank_account")
+  reference        String        @unique
+  first_name       String?
+  last_name        String?
+  company_name     String?
+  email            String?
+  tel              String?
+  personal_id_type String?
+  personal_id      String?
+  tax_id_number    String?
+  customs_code     String?
+  nature           Nature
+  organisation     Organisation  @relation(fields: [id_org], references: [id])
+  establishment    Establishment @relation(fields: [id_etb], references: [id])
+  contactType      ContactType   @relation(fields: [id_type_contact], references: [id])
+  vat              Vat           @relation(fields: [id_vat], references: [id])
+  bankAccount      BankAccount   @relation(fields: [id_bank_account], references: [id])
 }
 
-
 model Provider {
-  id                  String               @id
-  id_org              String               @map("id_org") 
-  id_etb              String               @map("id_etb") 
-  id_vat              String               @map("id_vat") 
-  id_tax              String               @map("id_tax") 
-  id_bank_account     String               @map("id_bank_account")
-  reference           String               @unique
-  first_name          String?
-  last_name           String?
-  company_name        String?
-  email               String?
-  tel                 String?
-  personal_id_type    String?
-  personal_id         String?
-  tax_id_number       String?
-  customs_code        String?
-  nature              Nature
-  organisation        Organisation         @relation(fields: [id_org], references: [id])
-  establishment       Establishment        @relation(fields: [id_etb], references: [id])
-  vat                 Vat                  @relation(fields: [id_vat], references: [id])
-  tax                 Tax                  @relation(fields: [id_tax], references: [id])
-  bankAccount         BankAccount           @relation(fields: [id_bank_account], references: [id])
+  id               String        @id
+  id_org           String        @map("id_org")
+  id_etb           String        @map("id_etb")
+  id_vat           String        @map("id_vat")
+  id_tax           String        @map("id_tax")
+  id_bank_account  String        @map("id_bank_account")
+  reference        String        @unique
+  first_name       String?
+  last_name        String?
+  company_name     String?
+  email            String?
+  tel              String?
+  personal_id_type String?
+  personal_id      String?
+  tax_id_number    String?
+  customs_code     String?
+  nature           Nature
+  organisation     Organisation  @relation(fields: [id_org], references: [id])
+  establishment    Establishment @relation(fields: [id_etb], references: [id])
+  vat              Vat           @relation(fields: [id_vat], references: [id])
+  tax              Tax           @relation(fields: [id_tax], references: [id])
+  bankAccount      BankAccount   @relation(fields: [id_bank_account], references: [id])
 }
 
 model Client {
-  id                  String               @id
-  id_org              String               @map("id_org")
-  id_etb              String               @map("id_etb") 
-  id_vat              String               @map("id_vat") 
-  id_tax              String               @map("id_tax") 
-  id_bank_account     String               @map("id_bank_account") 
-  reference           String               @unique
-  first_name          String?
-  last_name           String?
-  company_name        String?
-  email               String?
-  tel                 String?
-  personal_id_type    String?
-  personal_id         String?
-  tax_id_number       String?
-  customs_code        String?
-  nature              Nature
-  organisation        Organisation         @relation(fields: [id_org], references: [id])
-  establishment       Establishment        @relation(fields: [id_etb], references: [id])
-  vat                 Vat                  @relation(fields: [id_vat], references: [id])
-  tax                 Tax                  @relation(fields: [id_tax], references: [id])
-  bankAccount         BankAccount           @relation(fields: [id_bank_account], references: [id])
+  id               String        @id
+  id_org           String        @map("id_org")
+  id_etb           String        @map("id_etb")
+  id_vat           String        @map("id_vat")
+  id_tax           String        @map("id_tax")
+  id_bank_account  String        @map("id_bank_account")
+  reference        String        @unique
+  first_name       String?
+  last_name        String?
+  company_name     String?
+  email            String?
+  tel              String?
+  personal_id_type String?
+  personal_id      String?
+  tax_id_number    String?
+  customs_code     String?
+  nature           Nature
+  organisation     Organisation  @relation(fields: [id_org], references: [id])
+  establishment    Establishment @relation(fields: [id_etb], references: [id])
+  vat              Vat           @relation(fields: [id_vat], references: [id])
+  tax              Tax           @relation(fields: [id_tax], references: [id])
+  bankAccount      BankAccount   @relation(fields: [id_bank_account], references: [id])
 }
 
 enum Nature {
@@ -295,79 +293,78 @@ enum Nature {
 }
 
 model Category {
-  id                  String               @id
-  id_org              String               @map("id_org")
-  id_etb              String               @map("id_etb")
-  id_parent           String?
-  reference           String               @unique
-  designation         String?
-  organisation        Organisation         @relation(fields: [id_org], references: [id])
-  establishment       Establishment        @relation(fields: [id_etb], references: [id])
-  parent              Category?            @relation("ChildCategories", fields: [id_parent], references: [id])
-  childCategories     Category[]           @relation("ChildCategories")
-  articles            Article[]
+  id              String        @id
+  id_org          String        @map("id_org")
+  id_etb          String        @map("id_etb")
+  id_parent       String?
+  reference       String        @unique
+  designation     String?
+  organisation    Organisation  @relation(fields: [id_org], references: [id])
+  establishment   Establishment @relation(fields: [id_etb], references: [id])
+  parent          Category?     @relation("ChildCategories", fields: [id_parent], references: [id])
+  childCategories Category[]    @relation("ChildCategories")
+  articles        Article[]
 }
 
 model Unit {
-  id                  String               @id
-  id_org              String               @map("id_org") 
-  id_etb              String               @map("id_etb") 
-  reference           String               @unique
-  designation         String?
-  organisation        Organisation         @relation(fields: [id_org], references: [id])
-  establishment       Establishment        @relation(fields: [id_etb], references: [id])
+  id                   String            @id
+  id_org               String            @map("id_org")
+  id_etb               String            @map("id_etb")
+  reference            String            @unique
+  designation          String?
+  organisation         Organisation      @relation(fields: [id_org], references: [id])
+  establishment        Establishment     @relation(fields: [id_etb], references: [id])
   unitCoefficientsFrom UnitCoefficient[] @relation("UnitCoefficientsFrom")
   unitCoefficientsTo   UnitCoefficient[] @relation("UnitCoefficientsTo")
-  articlesSold        Article[] @relation("ArticlesSold")
-  articlesPurchased   Article[] @relation("ArticlesPurchased")
+  articlesSold         Article[]         @relation("ArticlesSold")
+  articlesPurchased    Article[]         @relation("ArticlesPurchased")
 }
 
-
 model UnitCoefficient {
-  id                  String               @id
-  id_org              String               @map("id_org") 
-  id_etb              String               @map("id_etb") 
-  reference           String               @unique
-  designation         String?
-  unit_from           String               @map("unit_from")
-  unit_to             String               @map("unit_to")
-  value               Float
-  organisation        Organisation         @relation(fields: [id_org], references: [id])
-  establishment       Establishment        @relation(fields: [id_etb], references: [id])
-  unitFrom            Unit                 @relation("UnitCoefficientsFrom", fields: [unit_from], references: [id])
-  unitTo              Unit                 @relation("UnitCoefficientsTo", fields: [unit_to], references: [id])
+  id            String        @id
+  id_org        String        @map("id_org")
+  id_etb        String        @map("id_etb")
+  reference     String        @unique
+  designation   String?
+  unit_from     String        @map("unit_from")
+  unit_to       String        @map("unit_to")
+  value         Float
+  organisation  Organisation  @relation(fields: [id_org], references: [id])
+  establishment Establishment @relation(fields: [id_etb], references: [id])
+  unitFrom      Unit          @relation("UnitCoefficientsFrom", fields: [unit_from], references: [id])
+  unitTo        Unit          @relation("UnitCoefficientsTo", fields: [unit_to], references: [id])
 }
 
 model Article {
-  id                  String               @id
-  id_org              String               @map("id_org") 
-  id_etb              String               @map("id_etb") 
-  id_category         String               @map("id_category") 
-  id_sub_article      String?
-  is_sub_article      Boolean
-  reference           String               @unique
-  designation         String?
-  EAN                 String
-  serial_number       String
-  sale_unit           String               @map("sale_unit") 
-  purchase_unit       String               @map("purchase_unit") 
-  buy_sell            BuySell[]
-  picking             Picking
-  is_service          Boolean
-  stock_management    StockManagement
-  volume              String
-  weight              Float
-  article_management  ArticleManagement
-  media               String
+  id                 String            @id
+  id_org             String            @map("id_org")
+  id_etb             String            @map("id_etb")
+  id_category        String            @map("id_category")
+  id_sub_article     String?
+  is_sub_article     Boolean
+  reference          String            @unique
+  designation        String?
+  EAN                String
+  serial_number      String
+  sale_unit          String            @map("sale_unit")
+  purchase_unit      String            @map("purchase_unit")
+  buy_sell           BuySell[]
+  picking            Picking
+  is_service         Boolean
+  stock_management   StockManagement
+  volume             String
+  weight             Float
+  article_management ArticleManagement
+  media              String
 
-  organisation        Organisation         @relation(fields: [id_org], references: [id])
-  establishment       Establishment        @relation(fields: [id_etb], references: [id])
-  category            Category             @relation(fields: [id_category], references: [id])
-  saleUnit            Unit                 @relation("ArticlesSold", fields: [sale_unit], references: [id])
-  purchaseUnit        Unit                 @relation("ArticlesPurchased", fields: [purchase_unit], references: [id])
-  subArticleProps     VariantProps[]
-  lotCompositions     LotComposition[]
-  stockpiles          Stockpile[]
+  organisation    Organisation     @relation(fields: [id_org], references: [id])
+  establishment   Establishment    @relation(fields: [id_etb], references: [id])
+  category        Category         @relation(fields: [id_category], references: [id])
+  saleUnit        Unit             @relation("ArticlesSold", fields: [sale_unit], references: [id])
+  purchaseUnit    Unit             @relation("ArticlesPurchased", fields: [purchase_unit], references: [id])
+  subArticleProps VariantProps[]
+  lotCompositions LotComposition[]
+  stockpiles      Stockpile[]
 }
 
 enum BuySell {
@@ -394,18 +391,18 @@ enum ArticleManagement {
 }
 
 model VariantProps {
-  id                  String               @id
-  id_org              String               @map("id_org") 
-  id_etb              String               @map("id_etb") 
-  id_sub_article      String               @map("id_sub_article") 
-  reference           String               @unique
-  designation         String?
-  type                VariantType
-  value               String
+  id             String      @id
+  id_org         String      @map("id_org")
+  id_etb         String      @map("id_etb")
+  id_sub_article String      @map("id_sub_article")
+  reference      String      @unique
+  designation    String?
+  type           VariantType
+  value          String
 
-  organisation        Organisation         @relation(fields: [id_org], references: [id])
-  establishment       Establishment        @relation(fields: [id_etb], references: [id])
-  subArticle          Article              @relation(fields: [id_sub_article], references: [id])
+  organisation  Organisation  @relation(fields: [id_org], references: [id])
+  establishment Establishment @relation(fields: [id_etb], references: [id])
+  subArticle    Article       @relation(fields: [id_sub_article], references: [id])
 }
 
 enum VariantType {
@@ -416,33 +413,33 @@ enum VariantType {
 }
 
 model LotComposition {
-  id                  String               @id
-  id_org              String               @map("id_org") 
-  id_etb              String               @map("id_etb") 
-  id_composant        String               @map("id_composant") 
-  reference           String               @unique
-  designation         String?
+  id           String  @id
+  id_org       String  @map("id_org")
+  id_etb       String  @map("id_etb")
+  id_composant String  @map("id_composant")
+  reference    String  @unique
+  designation  String?
 
-  organisation        Organisation         @relation(fields: [id_org], references: [id])
-  establishment       Establishment        @relation(fields: [id_etb], references: [id])
-  composant           Article              @relation(fields: [id_composant], references: [id])
+  organisation  Organisation  @relation(fields: [id_org], references: [id])
+  establishment Establishment @relation(fields: [id_etb], references: [id])
+  composant     Article       @relation(fields: [id_composant], references: [id])
 }
 
 model Stockpile {
-  id                  String               @id
-  id_org              String               @map("id_org") 
-  id_etb              String               @map("id_etb") 
-  id_deposit          String               @map("id_deposit") 
-  id_location         String               @map("id_location") 
-  id_article          String               @map("id_article") 
-  reference           String               @unique
-  designation         String?
-  qty_real            Float?
-  qty_virtual         Float?
-  qty_reserved        Float?
-  organisation        Organisation         @relation(fields: [id_org], references: [id])
-  establishment       Establishment        @relation(fields: [id_etb], references: [id])
-  deposit             Deposit              @relation(fields: [id_deposit], references: [id])
-  location            Location             @relation(fields: [id_location], references: [id])
-  article             Article              @relation(fields: [id_article], references: [id])
+  id            String        @id
+  id_org        String        @map("id_org")
+  id_etb        String        @map("id_etb")
+  id_deposit    String        @map("id_deposit")
+  id_location   String        @map("id_location")
+  id_article    String        @map("id_article")
+  reference     String        @unique
+  designation   String?
+  qty_real      Float?
+  qty_virtual   Float?
+  qty_reserved  Float?
+  organisation  Organisation  @relation(fields: [id_org], references: [id])
+  establishment Establishment @relation(fields: [id_etb], references: [id])
+  deposit       Deposit       @relation(fields: [id_deposit], references: [id])
+  location      Location      @relation(fields: [id_location], references: [id])
+  article       Article       @relation(fields: [id_article], references: [id])
 }
