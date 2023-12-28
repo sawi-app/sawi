@@ -7,6 +7,54 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  oidcId           String             @id @unique
+  approvalStatus   ApprovalStatus     @default(PENDING)
+  signupStep       String?
+  FirstName        String?
+  LastName         String?
+  Gender           UserGender?
+  email            String?
+  phone            String?
+  picture          String?
+  BirthDay         DateTime?
+  address          String?
+  bio              String?
+  nationality      String?
+  socialFacebook   String?
+  socialLinkedin   String?
+  socialTwitter    String?
+  website          String?
+  UserOrganisation UserOrganisation[]
+}
+
+enum UserGender {
+  MALE
+  FEMALE
+}
+
+model UserOrganisation {
+  id_org       String
+  role         OrganisationRole
+  userId       String
+  organisation Organisation     @relation(fields: [id_org], references: [id])
+  user         User             @relation(fields: [userId], references: [oidcId])
+
+  @@id([id_org, userId])
+}
+
+enum OrganisationRole {
+  SUPER_ADMIN
+  MANAGER
+  USER
+}
+
+enum ApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 model Address {
   id       String  @id
   refer_to String
@@ -29,7 +77,6 @@ model Organisation {
   tax_id_number        String?
   customs_code         String?
   phones               String[]
-  ownerId              String
   establishments       Establishment[]
   deposits             Deposit[]
   locations            Location[]
@@ -51,6 +98,7 @@ model Organisation {
   variantProps         VariantProps[]
   lotCompositions      LotComposition[]
   stockpiles           Stockpile[]
+  UserOrganisation     UserOrganisation[]
 }
 
 model Establishment {
