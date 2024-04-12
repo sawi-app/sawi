@@ -101,6 +101,7 @@ model Organisation {
   UserOrganisation     UserOrganisation[]
   operations           Operation[]
   commercialDoc        CommercialDoc[]
+  phase                Phase[]
 }
 
 model Establishment {
@@ -131,6 +132,7 @@ model Establishment {
   stockpiles           Stockpile[]
   operations           Operation[]
   commercialDoc        CommercialDoc[]
+  phase                Phase[]
 }
 
 model Deposit {
@@ -518,8 +520,19 @@ model CommercialDoc {
   id                String        @id
   id_org            String        @map("id_org")
   id_etb            String        @map("id_etb")
-  reference    String        @unique
+  reference         String        @unique
   designation       String?
+  organisation  Organisation  @relation(fields: [id_org], references: [id])
+  establishment Establishment @relation(fields: [id_etb], references: [id])
+}
+
+model Phase {
+  id                String        @id
+  id_org            String        @map("id_org")
+  id_etb            String        @map("id_etb")
+  reference         String        @unique
+  designation       String?
+  related_type      String?
   organisation  Organisation  @relation(fields: [id_org], references: [id])
   establishment Establishment @relation(fields: [id_etb], references: [id])
 }
