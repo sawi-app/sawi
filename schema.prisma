@@ -102,6 +102,7 @@ model Organisation {
   operations           Operation[]
   commercialDoc        CommercialDoc[]
   phase                Phase[]
+  transition           Transition[]
 }
 
 model Establishment {
@@ -133,6 +134,7 @@ model Establishment {
   operations           Operation[]
   commercialDoc        CommercialDoc[]
   phase                Phase[]
+  transition           Transition[]
 }
 
 model Deposit {
@@ -507,6 +509,7 @@ model Operation {
   virtual_action    OperationAction?
   real_action       OperationAction?
   reserved_action   OperationAction?
+  transition        Transition[]
   organisation  Organisation  @relation(fields: [id_org], references: [id])
   establishment Establishment @relation(fields: [id_etb], references: [id])
 }
@@ -522,6 +525,7 @@ model CommercialDoc {
   id_etb            String        @map("id_etb")
   reference         String        @unique
   designation       String?
+  transition        Transition[]
   organisation  Organisation  @relation(fields: [id_org], references: [id])
   establishment Establishment @relation(fields: [id_etb], references: [id])
 }
@@ -533,6 +537,23 @@ model Phase {
   reference         String        @unique
   designation       String?
   related_type      String?
+  transition        Transition[]
   organisation  Organisation  @relation(fields: [id_org], references: [id])
   establishment Establishment @relation(fields: [id_etb], references: [id])
+}
+
+model Transition {
+  id                String        @id
+  id_org            String        @map("id_org")
+  id_etb            String        @map("id_etb")
+  id_operation      String        @map("id_operation")
+  id_commercial_doc String        @map("id_commercial_doc")
+  id_phase          String        @map("id_phase")
+  reference         String        @unique
+  designation       String?
+  organisation      Organisation  @relation(fields: [id_org], references: [id])
+  establishment     Establishment @relation(fields: [id_etb], references: [id])
+  operation         Operation     @relation(fields: [id_operation], references: [id])
+  commercial_doc    CommercialDoc @relation(fields: [id_commercial_doc], references: [id])
+  phase             Phase         @relation(fields: [id_phase], references: [id])
 }
