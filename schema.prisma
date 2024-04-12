@@ -99,6 +99,8 @@ model Organisation {
   lotCompositions      LotComposition[]
   stockpiles           Stockpile[]
   UserOrganisation     UserOrganisation[]
+  operations           Operation[]
+  commercialDoc        CommercialDoc[]
 }
 
 model Establishment {
@@ -127,6 +129,8 @@ model Establishment {
   variantProps         VariantProps[]
   lotCompositions      LotComposition[]
   stockpiles           Stockpile[]
+  operations           Operation[]
+  commercialDoc        CommercialDoc[]
 }
 
 model Deposit {
@@ -490,4 +494,32 @@ model Stockpile {
   deposit       Deposit       @relation(fields: [id_deposit], references: [id])
   location      Location      @relation(fields: [id_location], references: [id])
   article       Article       @relation(fields: [id_article], references: [id])
+}
+
+model Operation {
+  id                String        @id
+  id_org            String        @map("id_org")
+  id_etb            String        @map("id_etb")
+  code_operation    String        @unique
+  designation       String?
+  virtual_action    OperationAction?
+  real_action       OperationAction?
+  reserved_action   OperationAction?
+  organisation  Organisation  @relation(fields: [id_org], references: [id])
+  establishment Establishment @relation(fields: [id_etb], references: [id])
+}
+enum OperationAction {
+  ADD
+  MINUS
+  UNCHANGED
+}
+
+model CommercialDoc {
+  id                String        @id
+  id_org            String        @map("id_org")
+  id_etb            String        @map("id_etb")
+  reference    String        @unique
+  designation       String?
+  organisation  Organisation  @relation(fields: [id_org], references: [id])
+  establishment Establishment @relation(fields: [id_etb], references: [id])
 }
