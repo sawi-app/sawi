@@ -103,12 +103,13 @@ model Organisation {
   commercialDoc        CommercialDoc[]
   phase                Phase[]
   transition           Transition[]
+  headers              Header[]
 }
 
 model Establishment {
   id                   String                @id
   id_org               String                @map("id_org")
-  referencee           String                @unique
+  reference            String                @unique
   designation          String?
   currency             String?
   organisation         Organisation          @relation(fields: [id_org], references: [id])
@@ -135,6 +136,7 @@ model Establishment {
   commercialDoc        CommercialDoc[]
   phase                Phase[]
   transition           Transition[]
+  headers              Header[]
 }
 
 model Deposit {
@@ -211,6 +213,7 @@ model Tax {
   establishment Establishment @relation(fields: [id_etb], references: [id])
   providers     Provider[]
   clients       Client[]
+  headers       Header[]
 }
 
 model Vat {
@@ -225,6 +228,7 @@ model Vat {
   contacts      Contact[]
   providers     Provider[]
   clients       Client[]
+  headers       Header[]
 }
 
 model Currency {
@@ -286,6 +290,7 @@ model Contact {
   tax_id_number    String?
   customs_code     String?
   nature           Nature
+  headers          Header[]
   organisation     Organisation  @relation(fields: [id_org], references: [id])
   establishment    Establishment @relation(fields: [id_etb], references: [id])
   contactType      ContactType   @relation(fields: [id_type_contact], references: [id])
@@ -311,6 +316,7 @@ model Provider {
   tax_id_number    String?
   customs_code     String?
   nature           Nature
+  headers          Header[]
   organisation     Organisation  @relation(fields: [id_org], references: [id])
   establishment    Establishment @relation(fields: [id_etb], references: [id])
   vat              Vat           @relation(fields: [id_vat], references: [id])
@@ -336,6 +342,7 @@ model Client {
   tax_id_number    String?
   customs_code     String?
   nature           Nature
+  headers          Header[]
   organisation     Organisation  @relation(fields: [id_org], references: [id])
   establishment    Establishment @relation(fields: [id_etb], references: [id])
   vat              Vat           @relation(fields: [id_vat], references: [id])
@@ -510,6 +517,7 @@ model Operation {
   real_action       OperationAction?
   reserved_action   OperationAction?
   transition        Transition[]
+  headers           Header[]
   organisation  Organisation  @relation(fields: [id_org], references: [id])
   establishment Establishment @relation(fields: [id_etb], references: [id])
 }
@@ -526,6 +534,7 @@ model CommercialDoc {
   reference         String        @unique
   designation       String?
   transition        Transition[]
+  headers           Header[]
   organisation  Organisation  @relation(fields: [id_org], references: [id])
   establishment Establishment @relation(fields: [id_etb], references: [id])
 }
@@ -538,6 +547,7 @@ model Phase {
   designation       String?
   related_type      String?
   transition        Transition[]
+  headers           Header[]
   organisation  Organisation  @relation(fields: [id_org], references: [id])
   establishment Establishment @relation(fields: [id_etb], references: [id])
 }
@@ -556,4 +566,30 @@ model Transition {
   operation         Operation     @relation(fields: [id_operation], references: [id])
   commercial_doc    CommercialDoc @relation(fields: [id_commercial_doc], references: [id])
   phase             Phase         @relation(fields: [id_phase], references: [id])
+}
+
+model Header {
+  id                String        @id
+  id_org            String        @map("id_org")
+  id_etb            String        @map("id_etb")
+  id_client         String?       @map("id_client")
+  id_provider       String?       @map("id_provider")
+  id_contact        String?       @map("id_contact")
+  id_operation      String        @map("id_operation")
+  id_commercial_doc String        @map("id_commercial_doc")
+  id_phase          String        @map("id_phase")
+  id_tax            String?       @map("id_tax")
+  id_vat            String?       @map("id_vat")
+  reference         String        @unique
+  header_group      String
+  organisation      Organisation  @relation(fields: [id_org], references: [id])
+  establishment     Establishment @relation(fields: [id_etb], references: [id])
+  provider          Provider?     @relation(fields: [id_provider], references: [id])
+  client            Client?       @relation(fields: [id_client], references: [id])
+  contact           Contact?      @relation(fields: [id_contact], references: [id])
+  operation         Operation     @relation(fields: [id_operation], references: [id])
+  commercial_doc    CommercialDoc @relation(fields: [id_commercial_doc], references: [id])
+  phase             Phase         @relation(fields: [id_phase], references: [id])
+  tax               Tax?          @relation(fields: [id_tax], references: [id])
+  vat               Vat?          @relation(fields: [id_vat], references: [id])
 }
