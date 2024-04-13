@@ -105,6 +105,7 @@ model Organisation {
   transition           Transition[]
   headers              Header[]
   movements            Movement[]
+  pricing              Pricing[]
 }
 
 model Establishment {
@@ -139,6 +140,7 @@ model Establishment {
   transition           Transition[]
   headers              Header[]
   movements            Movement[]
+  pricing              Pricing[]
 }
 
 model Deposit {
@@ -217,6 +219,7 @@ model Tax {
   clients       Client[]
   headers       Header[]
   movements     Movement[]
+  pricing       Pricing[]
 }
 
 model Vat {
@@ -233,6 +236,7 @@ model Vat {
   clients       Client[]
   headers       Header[]
   movements     Movement[]
+  pricing       Pricing[]
 }
 
 model Currency {
@@ -433,6 +437,7 @@ model Article {
   subArticleProps VariantProps[]
   lotCompositions LotComposition[]
   stockpiles      Stockpile[]
+  pricing         Pricing[]
 }
 
 enum BuySell {
@@ -510,6 +515,26 @@ model Stockpile {
   deposit       Deposit       @relation(fields: [id_deposit], references: [id])
   location      Location      @relation(fields: [id_location], references: [id])
   article       Article       @relation(fields: [id_article], references: [id])
+}
+
+model Pricing {
+  id                String        @id
+  idOrg            String        @map("idOrg")
+  idEtb            String        @map("idEtb")
+  idArticle        String        @map("idArticle")
+  idTax            String?       @map("idTax")
+  idVat            String?       @map("idVat")
+  purshasePrice     Float?
+  salePrice         Float
+  costPrice         Float?
+  startDate         DateTime?
+  endDate           DateTime?
+  CUMP              Float?
+  organisation  Organisation  @relation(fields: [idOrg], references: [id])
+  establishment Establishment @relation(fields: [idEtb], references: [id])
+  article       Article       @relation(fields: [idArticle], references: [id])
+  tax           Tax?          @relation(fields: [idTax], references: [id])
+  vat           Vat?          @relation(fields: [idVat], references: [id])
 }
 
 model Operation {
