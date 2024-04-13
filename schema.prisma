@@ -104,6 +104,7 @@ model Organisation {
   phase                Phase[]
   transition           Transition[]
   headers              Header[]
+  movements            Movement[]
 }
 
 model Establishment {
@@ -137,6 +138,7 @@ model Establishment {
   phase                Phase[]
   transition           Transition[]
   headers              Header[]
+  movements            Movement[]
 }
 
 model Deposit {
@@ -214,6 +216,7 @@ model Tax {
   providers     Provider[]
   clients       Client[]
   headers       Header[]
+  movements     Movement[]
 }
 
 model Vat {
@@ -229,6 +232,7 @@ model Vat {
   providers     Provider[]
   clients       Client[]
   headers       Header[]
+  movements     Movement[]
 }
 
 model Currency {
@@ -381,6 +385,7 @@ model Unit {
   unitCoefficientsTo   UnitCoefficient[] @relation("UnitCoefficientsTo")
   articlesSold         Article[]         @relation("ArticlesSold")
   articlesPurchased    Article[]         @relation("ArticlesPurchased")
+  movements            Movement[]
 }
 
 model UnitCoefficient {
@@ -518,6 +523,7 @@ model Operation {
   reserved_action   OperationAction?
   transition        Transition[]
   headers           Header[]
+  movements         Movement[]
   organisation  Organisation  @relation(fields: [id_org], references: [id])
   establishment Establishment @relation(fields: [id_etb], references: [id])
 }
@@ -581,6 +587,8 @@ model Header {
   id_tax            String?       @map("id_tax")
   id_vat            String?       @map("id_vat")
   reference         String        @unique
+  untaxed_amount    Float
+  taxed_amount      Float
   header_group      String
   organisation      Organisation  @relation(fields: [id_org], references: [id])
   establishment     Establishment @relation(fields: [id_etb], references: [id])
@@ -590,6 +598,27 @@ model Header {
   operation         Operation     @relation(fields: [id_operation], references: [id])
   commercial_doc    CommercialDoc @relation(fields: [id_commercial_doc], references: [id])
   phase             Phase         @relation(fields: [id_phase], references: [id])
+  tax               Tax?          @relation(fields: [id_tax], references: [id])
+  vat               Vat?          @relation(fields: [id_vat], references: [id])
+}
+
+model Movement {
+  id                String        @id
+  id_org            String        @map("id_org")
+  id_etb            String        @map("id_etb")
+  id_header         String        @map("id_header")
+  id_article        String        @map("id_article")
+  qty               Float
+  id_unit           String        @map("id_unit")
+  id_tax            String?       @map("id_tax")
+  id_vat            String?       @map("id_vat")
+  untaxed_amount    Float
+  taxed_amount      Float
+  id_operation      String        @map("id_operation")
+  organisation      Organisation  @relation(fields: [id_org], references: [id])
+  establishment     Establishment @relation(fields: [id_etb], references: [id])
+  operation         Operation     @relation(fields: [id_operation], references: [id])
+  unit              Unit          @relation(fields: [id_unit], references: [id])
   tax               Tax?          @relation(fields: [id_tax], references: [id])
   vat               Vat?          @relation(fields: [id_vat], references: [id])
 }
