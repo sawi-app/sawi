@@ -8,45 +8,69 @@ datasource db {
 }
 
 model User {
-  oidcId           String             @id @unique
-  approvalStatus   ApprovalStatus     @default(PENDING)
-  signupStep       String?
-  FirstName        String?
-  LastName         String?
-  Gender           UserGender?
-  email            String?
-  phone            String?
-  picture          String?
-  BirthDay         DateTime?
-  address          String?
-  bio              String?
-  nationality      String?
-  socialFacebook   String?
-  socialLinkedin   String?
-  socialTwitter    String?
-  website          String?
-  UserOrganisation UserOrganisation[]
+  oidcId      String       @id @unique
+  firstName   String?
+  middleName  String?
+  lastName    String?
+  gender      UserGender?
+  birthDay    DateTime?
+  email       String?
+  phone       String?
+  picture     String?
+  userDevices UserDevice[]
+
+  address        String?
+  bio            String?
+  nationality    String?
+  socialFacebook String?
+  socialLinkedin String?
+  socialTwitter  String?
+  website        String?
+  organizations  UserOrganization[]
+
+  projects  UserProject[]
+  pointings Pointing[]
+}
+
+model Settings {
+  key   String @id
+  value Json
 }
 
 enum UserGender {
-  MALE
-  FEMALE
+  Male
+  Female
 }
 
-model UserOrganisation {
+model UserOrganization {
   idOrg        String
-  role         OrganisationRole
+  role         OrganizationRole
   userId       String
-  organisation Organisation     @relation(fields: [idOrg], references: [id])
+  organisation Organization     @relation(fields: [idOrg], references: [id])
   user         User             @relation(fields: [userId], references: [oidcId])
 
   @@id([idOrg, userId])
 }
 
-enum OrganisationRole {
+enum OrganizationRole {
   SUPER_ADMIN
   MANAGER
   USER
+}
+
+model UserProject {
+  projectId String
+  role      ProjectRole
+  userId    String
+  user      User        @relation(fields: [userId], references: [oidcId])
+  project   Project     @relation(fields: [projectId], references: [id])
+
+  @@id([projectId, userId])
+}
+
+enum ProjectRole {
+  EMPLOYEE
+  CHEIF
 }
 
 enum ApprovalStatus {
@@ -68,7 +92,7 @@ model Address {
   lng     String?
 }
 
-model Organisation {
+model Organization {
   id                   String                @id
   reference            String
   name                 String?
@@ -98,14 +122,16 @@ model Organisation {
   variantProps         VariantProps[]
   lotCompositions      LotComposition[]
   stockpiles           Stockpile[]
-  UserOrganisation     UserOrganisation[]
+  organizations        UserOrganization[]
   operations           Operation[]
-  commercialDoc        CommercialDoc[]
-  phase                Phase[]
-  transition           Transition[]
+  commercialDocs       CommercialDoc[]
+  phases               Phase[]
+  transitions          Transition[]
   headers              Header[]
   movements            Movement[]
   pricing              Pricing[]
+  pointings            Pointing[]
+  projects             Project[]
 }
 
 model Establishment {
@@ -114,7 +140,7 @@ model Establishment {
   reference            String                @unique
   designation          String?
   currency             String?
-  organisation         Organisation          @relation(fields: [idOrg], references: [id])
+  organisation         Organization          @relation(fields: [idOrg], references: [id])
   deposits             Deposit[]
   locations            Location[]
   contactTypes         ContactType[]
@@ -141,6 +167,7 @@ model Establishment {
   headers              Header[]
   movements            Movement[]
   pricing              Pricing[]
+  pointing             Pointing[]
 }
 
 model Deposit {
@@ -150,7 +177,7 @@ model Deposit {
   reference     String        @unique
   designation   String?
   type          String
-  organisation  Organisation  @relation(fields: [idOrg], references: [id])
+  organisation  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
   locations     Location[]
   stockpiles    Stockpile[]
@@ -164,7 +191,7 @@ model Location {
   reference     String        @unique
   designation   String?
   volume        String?
-  organisation  Organisation  @relation(fields: [idOrg], references: [id])
+  organisation  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
   deposit       Deposit       @relation(fields: [idDepo], references: [id])
   stockpiles    Stockpile[]
@@ -176,7 +203,7 @@ model ContactType {
   idEtb         String        @map("idEtb")
   reference     String        @unique
   designation   String?
-  organisation  Organisation  @relation(fields: [idOrg], references: [id])
+  organisation  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
   contacts      Contact[]
 }
@@ -186,7 +213,7 @@ model Bank {
   idOrg        String        @map("idOrg")
   reference    String        @unique
   designation  String?
-  organisation Organisation  @relation(fields: [idOrg], references: [id])
+  organisation Organization  @relation(fields: [idOrg], references: [id])
   bankAccounts BankAccount[]
 }
 
@@ -197,7 +224,7 @@ model BankAccount {
   idBank        String        @map("idBank")
   reference     String        @unique
   RIB           String
-  organisation  Organisation  @relation(fields: [idOrg], references: [id])
+  organisation  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
   bank          Bank          @relation(fields: [idBank], references: [id])
   contacts      Contact[]
@@ -213,7 +240,7 @@ model Tax {
   designation   String?
   value         Float?
   taxType       String?
-  organisation  Organisation  @relation(fields: [idOrg], references: [id])
+  organisation  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
   providers     Provider[]
   clients       Client[]
@@ -229,7 +256,7 @@ model Vat {
   reference     String        @unique
   designation   String?
   value         Float?
-  organisation  Organisation  @relation(fields: [idOrg], references: [id])
+  organisation  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
   contacts      Contact[]
   providers     Provider[]
@@ -246,7 +273,7 @@ model Currency {
   reference                String                @unique
   designation              String?
   symbol                   String?
-  organisation             Organisation          @relation(fields: [idOrg], references: [id])
+  organisation             Organization          @relation(fields: [idOrg], references: [id])
   establishment            Establishment         @relation(fields: [idEtb], references: [id])
   currencyCoefficientsFrom CurrencyCoefficient[] @relation("CurrencyFrom")
   currencyCoefficientsTo   CurrencyCoefficient[] @relation("CurrencyTo")
@@ -261,7 +288,7 @@ model CurrencyCoefficient {
   value          Float?
   idCurrencyFrom String        @map("idCurrencyFrom")
   idCurrencyTo   String        @map("idCurrencyTo")
-  organisation   Organisation  @relation(fields: [idOrg], references: [id])
+  organisation   Organization  @relation(fields: [idOrg], references: [id])
   establishment  Establishment @relation(fields: [idEtb], references: [id])
   currencyFrom   Currency      @relation("CurrencyFrom", fields: [idCurrencyFrom], references: [id])
   currencyTo     Currency      @relation("CurrencyTo", fields: [idCurrencyTo], references: [id])
@@ -276,7 +303,7 @@ model Discount {
   value         Float?
   effectDate    DateTime
   endDate       DateTime
-  organisation  Organisation  @relation(fields: [idOrg], references: [id])
+  organisation  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
 }
 
@@ -299,7 +326,7 @@ model Contact {
   customsCode    String?
   nature         Nature
   headers        Header[]
-  organisation   Organisation  @relation(fields: [idOrg], references: [id])
+  organisation   Organization  @relation(fields: [idOrg], references: [id])
   establishment  Establishment @relation(fields: [idEtb], references: [id])
   contactType    ContactType   @relation(fields: [idTypeContact], references: [id])
   vat            Vat           @relation(fields: [idVat], references: [id])
@@ -325,7 +352,7 @@ model Provider {
   customsCode    String?
   nature         Nature
   headers        Header[]
-  organisation   Organisation  @relation(fields: [idOrg], references: [id])
+  organisation   Organization  @relation(fields: [idOrg], references: [id])
   establishment  Establishment @relation(fields: [idEtb], references: [id])
   vat            Vat           @relation(fields: [idVat], references: [id])
   tax            Tax           @relation(fields: [idTax], references: [id])
@@ -351,7 +378,7 @@ model Client {
   customsCode    String?
   nature         Nature
   headers        Header[]
-  organisation   Organisation  @relation(fields: [idOrg], references: [id])
+  organisation   Organization  @relation(fields: [idOrg], references: [id])
   establishment  Establishment @relation(fields: [idEtb], references: [id])
   vat            Vat           @relation(fields: [idVat], references: [id])
   tax            Tax           @relation(fields: [idTax], references: [id])
@@ -370,7 +397,7 @@ model Category {
   idParent        String?
   reference       String        @unique
   designation     String?
-  organisation    Organisation  @relation(fields: [idOrg], references: [id])
+  organisation    Organization  @relation(fields: [idOrg], references: [id])
   establishment   Establishment @relation(fields: [idEtb], references: [id])
   parent          Category?     @relation("ChildCategories", fields: [idParent], references: [id])
   childCategories Category[]    @relation("ChildCategories")
@@ -383,7 +410,7 @@ model Unit {
   idEtb                String            @map("idEtb")
   reference            String            @unique
   designation          String?
-  organisation         Organisation      @relation(fields: [idOrg], references: [id])
+  organisation         Organization      @relation(fields: [idOrg], references: [id])
   establishment        Establishment     @relation(fields: [idEtb], references: [id])
   unitCoefficientsFrom UnitCoefficient[] @relation("UnitCoefficientsFrom")
   unitCoefficientsTo   UnitCoefficient[] @relation("UnitCoefficientsTo")
@@ -401,7 +428,7 @@ model UnitCoefficient {
   unitFrom      String        @map("unitFrom")
   unitTo        String        @map("unitTo")
   value         Float
-  organisation  Organisation  @relation(fields: [idOrg], references: [id])
+  organisation  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
   unit_from     Unit          @relation("UnitCoefficientsFrom", fields: [unitFrom], references: [id])
   unit_to       Unit          @relation("UnitCoefficientsTo", fields: [unitTo], references: [id])
@@ -429,7 +456,7 @@ model Article {
   articleManagement ArticleManagement
   media             String
 
-  organisation    Organisation     @relation(fields: [idOrg], references: [id])
+  organisation    Organization     @relation(fields: [idOrg], references: [id])
   establishment   Establishment    @relation(fields: [idEtb], references: [id])
   category        Category         @relation(fields: [idCategory], references: [id])
   sale_unit       Unit             @relation("ArticlesSold", fields: [saleUnit], references: [id])
@@ -473,7 +500,7 @@ model VariantProps {
   type         VariantType
   value        String
 
-  organisation  Organisation  @relation(fields: [idOrg], references: [id])
+  organisation  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
   subArticle    Article       @relation(fields: [idSubArticle], references: [id])
 }
@@ -493,7 +520,7 @@ model LotComposition {
   reference   String  @unique
   designation String?
 
-  organisation  Organisation  @relation(fields: [idOrg], references: [id])
+  organisation  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
   composant     Article       @relation(fields: [idComposant], references: [id])
 }
@@ -510,7 +537,7 @@ model Stockpile {
   qtyReal       Float?
   qtyVirtual    Float?
   qtyReserved   Float?
-  organisation  Organisation  @relation(fields: [idOrg], references: [id])
+  organisation  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
   deposit       Deposit       @relation(fields: [idDeposit], references: [id])
   location      Location      @relation(fields: [idLocation], references: [id])
@@ -530,7 +557,7 @@ model Pricing {
   startDate     DateTime?
   endDate       DateTime?
   CUMP          Float?
-  organisation  Organisation  @relation(fields: [idOrg], references: [id])
+  organisation  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
   article       Article       @relation(fields: [idArticle], references: [id])
   tax           Tax?          @relation(fields: [idTax], references: [id])
@@ -549,7 +576,7 @@ model Operation {
   transition     Transition[]
   headers        Header[]
   movements      Movement[]
-  organisation   Organisation     @relation(fields: [idOrg], references: [id])
+  organisation   Organization     @relation(fields: [idOrg], references: [id])
   establishment  Establishment    @relation(fields: [idEtb], references: [id])
 }
 
@@ -567,7 +594,7 @@ model CommercialDoc {
   designation   String?
   transition    Transition[]
   headers       Header[]
-  organisation  Organisation  @relation(fields: [idOrg], references: [id])
+  organisation  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
 }
 
@@ -580,7 +607,7 @@ model Phase {
   relatedType   String?
   transition    Transition[]
   headers       Header[]
-  organisation  Organisation  @relation(fields: [idOrg], references: [id])
+  organisation  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
 }
 
@@ -593,7 +620,7 @@ model Transition {
   idPhase         String        @map("idPhase")
   reference       String        @unique
   designation     String?
-  organisation    Organisation  @relation(fields: [idOrg], references: [id])
+  organisation    Organization  @relation(fields: [idOrg], references: [id])
   establishment   Establishment @relation(fields: [idEtb], references: [id])
   operation       Operation     @relation(fields: [idOperation], references: [id])
   commercialDoc   CommercialDoc @relation(fields: [idCommercialDoc], references: [id])
@@ -616,7 +643,7 @@ model Header {
   untaxedAmount   Float
   taxedAmount     Float
   headerGroup     String
-  organisation    Organisation  @relation(fields: [idOrg], references: [id])
+  organisation    Organization  @relation(fields: [idOrg], references: [id])
   establishment   Establishment @relation(fields: [idEtb], references: [id])
   provider        Provider?     @relation(fields: [idProvider], references: [id])
   client          Client?       @relation(fields: [idClient], references: [id])
@@ -641,10 +668,101 @@ model Movement {
   untaxedAmount Float
   taxedAmount   Float
   idOperation   String        @map("idOperation")
-  organisation  Organisation  @relation(fields: [idOrg], references: [id])
+  organisation  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
   operation     Operation     @relation(fields: [idOperation], references: [id])
   unit          Unit          @relation(fields: [idUnit], references: [id])
   tax           Tax?          @relation(fields: [idTax], references: [id])
   vat           Vat?          @relation(fields: [idVat], references: [id])
+}
+
+model UserDevice {
+  id     String @unique
+  User   User   @relation(fields: [userId], references: [oidcId])
+  userId String
+  token  String @unique
+  ua     Json?
+
+  @@id([userId, token])
+}
+
+enum ScopeType {
+  USER
+  CHIEF
+  EMPLOYEE
+  ORG
+  ESTABLISHMENT
+}
+
+enum NotifAction {
+  OTHER
+}
+
+model Notifications {
+  id String @id @unique
+
+  senderScope   ScopeType?
+  senderScopeId String?
+
+  receiverScope   ScopeType @default(USER)
+  receiverScopeId String
+
+  t      DateTime    @default(now())
+  isRead Boolean     @default(false)
+  icon   String?
+  action NotifAction @default(OTHER)
+  body   Json?
+  title  String?
+  link   String?
+}
+
+// ------------------------------------- AJEER API
+model Pointing {
+  id   String   @id @unique
+  date DateTime
+  note String?
+
+  salary     Float?
+  deposit    Float?
+  project    Project? @relation(fields: [projectId], references: [id])
+  projectId  String?
+  hours      WorkDay  @default(FULL)
+  extraHours Float    @default(0)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [oidcId])
+
+  isLeaving Boolean @default(false)
+
+  orgId        String
+  organization Organization? @relation(fields: [orgId], references: [id])
+
+  etbId         String
+  establishment Establishment? @relation(fields: [etbId], references: [id])
+}
+
+enum WorkDay {
+  FULL
+  HALF
+  NONE
+}
+
+model Project {
+  id          String         @id @unique
+  nom         String
+  address     String?
+  description String?
+  status      ProjectStatus?
+
+  organization Organization? @relation(fields: [orgId], references: [id])
+  orgId        String?
+  pointings    Pointing[]
+  isDeleted    Boolean       @default(false)
+  users        UserProject[]
+}
+
+enum ProjectStatus {
+  DRAFT
+  IN_PROGRESS
+  FINISHED
 }
