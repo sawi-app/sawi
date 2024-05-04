@@ -46,7 +46,7 @@ model UserOrganization {
   idOrg        String
   role         OrganizationRole
   userId       String
-  organisation Organization     @relation(fields: [idOrg], references: [id])
+  organization Organization     @relation(fields: [idOrg], references: [id])
   user         User             @relation(fields: [userId], references: [oidcId])
 
   @@id([idOrg, userId])
@@ -140,7 +140,7 @@ model Establishment {
   reference            String                @unique
   designation          String?
   currency             String?
-  organisation         Organization          @relation(fields: [idOrg], references: [id])
+  organization         Organization          @relation(fields: [idOrg], references: [id])
   deposits             Deposit[]
   locations            Location[]
   contactTypes         ContactType[]
@@ -177,7 +177,7 @@ model Deposit {
   reference     String        @unique
   designation   String?
   type          String
-  organisation  Organization  @relation(fields: [idOrg], references: [id])
+  organization  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
   locations     Location[]
   stockpiles    Stockpile[]
@@ -191,7 +191,7 @@ model Location {
   reference     String        @unique
   designation   String?
   volume        String?
-  organisation  Organization  @relation(fields: [idOrg], references: [id])
+  organization  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
   deposit       Deposit       @relation(fields: [idDepo], references: [id])
   stockpiles    Stockpile[]
@@ -203,7 +203,7 @@ model ContactType {
   idEtb         String        @map("idEtb")
   reference     String        @unique
   designation   String?
-  organisation  Organization  @relation(fields: [idOrg], references: [id])
+  organization  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
   contacts      Contact[]
 }
@@ -213,7 +213,7 @@ model Bank {
   idOrg        String        @map("idOrg")
   reference    String        @unique
   designation  String?
-  organisation Organization  @relation(fields: [idOrg], references: [id])
+  organization Organization  @relation(fields: [idOrg], references: [id])
   bankAccounts BankAccount[]
 }
 
@@ -224,7 +224,7 @@ model BankAccount {
   idBank        String        @map("idBank")
   reference     String        @unique
   RIB           String
-  organisation  Organization  @relation(fields: [idOrg], references: [id])
+  organization  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
   bank          Bank          @relation(fields: [idBank], references: [id])
   contacts      Contact[]
@@ -240,7 +240,7 @@ model Tax {
   designation   String?
   value         Float?
   taxType       String?
-  organisation  Organization  @relation(fields: [idOrg], references: [id])
+  organization  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
   providers     Provider[]
   clients       Client[]
@@ -256,7 +256,7 @@ model Vat {
   reference     String        @unique
   designation   String?
   value         Float?
-  organisation  Organization  @relation(fields: [idOrg], references: [id])
+  organization  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
   contacts      Contact[]
   providers     Provider[]
@@ -273,7 +273,7 @@ model Currency {
   reference                String                @unique
   designation              String?
   symbol                   String?
-  organisation             Organization          @relation(fields: [idOrg], references: [id])
+  organization             Organization          @relation(fields: [idOrg], references: [id])
   establishment            Establishment         @relation(fields: [idEtb], references: [id])
   currencyCoefficientsFrom CurrencyCoefficient[] @relation("CurrencyFrom")
   currencyCoefficientsTo   CurrencyCoefficient[] @relation("CurrencyTo")
@@ -288,7 +288,7 @@ model CurrencyCoefficient {
   value          Float?
   idCurrencyFrom String        @map("idCurrencyFrom")
   idCurrencyTo   String        @map("idCurrencyTo")
-  organisation   Organization  @relation(fields: [idOrg], references: [id])
+  organization   Organization  @relation(fields: [idOrg], references: [id])
   establishment  Establishment @relation(fields: [idEtb], references: [id])
   currencyFrom   Currency      @relation("CurrencyFrom", fields: [idCurrencyFrom], references: [id])
   currencyTo     Currency      @relation("CurrencyTo", fields: [idCurrencyTo], references: [id])
@@ -303,7 +303,7 @@ model Discount {
   value         Float?
   effectDate    DateTime
   endDate       DateTime
-  organisation  Organization  @relation(fields: [idOrg], references: [id])
+  organization  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
 }
 
@@ -326,7 +326,7 @@ model Contact {
   customsCode    String?
   nature         Nature
   headers        Header[]
-  organisation   Organization  @relation(fields: [idOrg], references: [id])
+  organization   Organization  @relation(fields: [idOrg], references: [id])
   establishment  Establishment @relation(fields: [idEtb], references: [id])
   contactType    ContactType   @relation(fields: [idTypeContact], references: [id])
   vat            Vat           @relation(fields: [idVat], references: [id])
@@ -352,7 +352,7 @@ model Provider {
   customsCode    String?
   nature         Nature
   headers        Header[]
-  organisation   Organization  @relation(fields: [idOrg], references: [id])
+  organization   Organization  @relation(fields: [idOrg], references: [id])
   establishment  Establishment @relation(fields: [idEtb], references: [id])
   vat            Vat           @relation(fields: [idVat], references: [id])
   tax            Tax           @relation(fields: [idTax], references: [id])
@@ -378,7 +378,7 @@ model Client {
   customsCode    String?
   nature         Nature
   headers        Header[]
-  organisation   Organization  @relation(fields: [idOrg], references: [id])
+  organization   Organization  @relation(fields: [idOrg], references: [id])
   establishment  Establishment @relation(fields: [idEtb], references: [id])
   vat            Vat           @relation(fields: [idVat], references: [id])
   tax            Tax           @relation(fields: [idTax], references: [id])
@@ -397,7 +397,7 @@ model Category {
   idParent        String?
   reference       String        @unique
   designation     String?
-  organisation    Organization  @relation(fields: [idOrg], references: [id])
+  organization    Organization  @relation(fields: [idOrg], references: [id])
   establishment   Establishment @relation(fields: [idEtb], references: [id])
   parent          Category?     @relation("ChildCategories", fields: [idParent], references: [id])
   childCategories Category[]    @relation("ChildCategories")
@@ -410,7 +410,7 @@ model Unit {
   idEtb                String            @map("idEtb")
   reference            String            @unique
   designation          String?
-  organisation         Organization      @relation(fields: [idOrg], references: [id])
+  organization         Organization      @relation(fields: [idOrg], references: [id])
   establishment        Establishment     @relation(fields: [idEtb], references: [id])
   unitCoefficientsFrom UnitCoefficient[] @relation("UnitCoefficientsFrom")
   unitCoefficientsTo   UnitCoefficient[] @relation("UnitCoefficientsTo")
@@ -428,7 +428,7 @@ model UnitCoefficient {
   unitFrom      String        @map("unitFrom")
   unitTo        String        @map("unitTo")
   value         Float
-  organisation  Organization  @relation(fields: [idOrg], references: [id])
+  organization  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
   unit_from     Unit          @relation("UnitCoefficientsFrom", fields: [unitFrom], references: [id])
   unit_to       Unit          @relation("UnitCoefficientsTo", fields: [unitTo], references: [id])
@@ -456,7 +456,7 @@ model Article {
   articleManagement ArticleManagement
   media             String
 
-  organisation    Organization     @relation(fields: [idOrg], references: [id])
+  organization    Organization     @relation(fields: [idOrg], references: [id])
   establishment   Establishment    @relation(fields: [idEtb], references: [id])
   category        Category         @relation(fields: [idCategory], references: [id])
   sale_unit       Unit             @relation("ArticlesSold", fields: [saleUnit], references: [id])
@@ -500,7 +500,7 @@ model VariantProps {
   type         VariantType
   value        String
 
-  organisation  Organization  @relation(fields: [idOrg], references: [id])
+  organization  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
   subArticle    Article       @relation(fields: [idSubArticle], references: [id])
 }
@@ -520,7 +520,7 @@ model LotComposition {
   reference   String  @unique
   designation String?
 
-  organisation  Organization  @relation(fields: [idOrg], references: [id])
+  organization  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
   composant     Article       @relation(fields: [idComposant], references: [id])
 }
@@ -537,7 +537,7 @@ model Stockpile {
   qtyReal       Float?
   qtyVirtual    Float?
   qtyReserved   Float?
-  organisation  Organization  @relation(fields: [idOrg], references: [id])
+  organization  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
   deposit       Deposit       @relation(fields: [idDeposit], references: [id])
   location      Location      @relation(fields: [idLocation], references: [id])
@@ -557,7 +557,7 @@ model Pricing {
   startDate     DateTime?
   endDate       DateTime?
   CUMP          Float?
-  organisation  Organization  @relation(fields: [idOrg], references: [id])
+  organization  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
   article       Article       @relation(fields: [idArticle], references: [id])
   tax           Tax?          @relation(fields: [idTax], references: [id])
@@ -576,7 +576,7 @@ model Operation {
   transition     Transition[]
   headers        Header[]
   movements      Movement[]
-  organisation   Organization     @relation(fields: [idOrg], references: [id])
+  organization   Organization     @relation(fields: [idOrg], references: [id])
   establishment  Establishment    @relation(fields: [idEtb], references: [id])
 }
 
@@ -594,7 +594,7 @@ model CommercialDoc {
   designation   String?
   transition    Transition[]
   headers       Header[]
-  organisation  Organization  @relation(fields: [idOrg], references: [id])
+  organization  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
 }
 
@@ -607,7 +607,7 @@ model Phase {
   relatedType   String?
   transition    Transition[]
   headers       Header[]
-  organisation  Organization  @relation(fields: [idOrg], references: [id])
+  organization  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
 }
 
@@ -620,7 +620,7 @@ model Transition {
   idPhase         String        @map("idPhase")
   reference       String        @unique
   designation     String?
-  organisation    Organization  @relation(fields: [idOrg], references: [id])
+  organization    Organization  @relation(fields: [idOrg], references: [id])
   establishment   Establishment @relation(fields: [idEtb], references: [id])
   operation       Operation     @relation(fields: [idOperation], references: [id])
   commercialDoc   CommercialDoc @relation(fields: [idCommercialDoc], references: [id])
@@ -643,7 +643,7 @@ model Header {
   untaxedAmount   Float
   taxedAmount     Float
   headerGroup     String
-  organisation    Organization  @relation(fields: [idOrg], references: [id])
+  organization    Organization  @relation(fields: [idOrg], references: [id])
   establishment   Establishment @relation(fields: [idEtb], references: [id])
   provider        Provider?     @relation(fields: [idProvider], references: [id])
   client          Client?       @relation(fields: [idClient], references: [id])
@@ -668,7 +668,7 @@ model Movement {
   untaxedAmount Float
   taxedAmount   Float
   idOperation   String        @map("idOperation")
-  organisation  Organization  @relation(fields: [idOrg], references: [id])
+  organization  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
   operation     Operation     @relation(fields: [idOperation], references: [id])
   unit          Unit          @relation(fields: [idUnit], references: [id])
