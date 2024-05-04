@@ -2,12 +2,12 @@
   "name": "riwaq-pg",
   "version": "1.0.0",
   "description": "Stateful database schema using PostgreSQL, PostGraphile, and Prisma that reflects immediately as a real-time GraphQL API.",
-  "author": "Mohamed Dardouri <med@mahd.group>",
+  "author": "Mahd Group <contact@mahd.group>",
   "license": "MIT",
+  "type": "module",
   "main": "server.ts",
   "scripts": {
-    "start": "tsc -p tsconfig-server.json && node dist/server.js",
-    "build": "tsc -p tsconfig-server.json",
+    "start": "vite-node server.ts",
     "status": "prisma migrate status",
     "migrate": "prisma migrate dev --name",
     "reset": "prisma migrate reset",
@@ -23,23 +23,32 @@
     "studio": "prisma studio"
   },
   "prisma": {
-    "schema": "schema.prisma",
-    "seed": "ts-node seed.ts"
+    "schema": "schema.prisma"
   },
   "devDependencies": {
-    "@prisma/client": "^5.4.2",
-    "@types/node": "^20.8.6",
-    "prisma": "^5.4.2",
-    "ts-node": "^10.9.1"
+    "@types/node": "^20.10.5",
+    "prisma": "^5.7.1",
+    "ts-node": "^10.9.2"
   },
   "dependencies": {
-    "dotenv": "^16.3.1",
-    "typescript": "^5.2.2",
     "@graphile-contrib/pg-simplify-inflector": "^6.1.0",
+    "@graphile/pg-aggregates": "^0.1.1",
+    "@graphile/postgis": "^0.2.0",
     "@graphile/subscriptions-lds": "^4.13.0",
+    "@prisma/client": "^5.7.1",
+    "dayjs": "^1.11.10",
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-jwt": "^8.4.1",
+    "graphile-utils": "^4.13.0",
     "jwks-rsa": "^3.1.0",
-    "postgraphile": "^4.13.0"
+    "postgraphile": "^4.13.0",
+    "postgraphile-index-to-unique-constraint-plugin": "^1.0.1",
+    "postgraphile-plugin-connection-filter": "^2.3.0",
+    "postgraphile-plugin-connection-filter-postgis": "^1.0.0-alpha.6",
+    "postgraphile-plugin-many-create-update-delete": "^1.0.7",
+    "postgraphile-upsert-plugin": "^3.3.0",
+    "typescript": "^5.3.3",
+    "vite-node": "^1.1.0"
   }
 }
