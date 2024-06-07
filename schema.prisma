@@ -27,9 +27,6 @@ model User {
   socialTwitter  String?
   website        String?
   organizations  UserOrganization[]
-
-  projects  UserProject[]
-  pointings Pointing[]
 }
 
 model Settings {
@@ -56,21 +53,6 @@ enum OrganizationRole {
   SUPER_ADMIN
   MANAGER
   USER
-}
-
-model UserProject {
-  projectId String
-  role      ProjectRole
-  userId    String
-  user      User        @relation(fields: [userId], references: [oidcId])
-  project   Project     @relation(fields: [projectId], references: [id])
-
-  @@id([projectId, userId])
-}
-
-enum ProjectRole {
-  EMPLOYEE
-  CHEIF
 }
 
 enum ApprovalStatus {
@@ -132,6 +114,7 @@ model Organization {
   pricing              Pricing[]
   pointings            Pointing[]
   projects             Project[]
+  emplyees             Employee[]
 }
 
 model Establishment {
@@ -167,7 +150,9 @@ model Establishment {
   headers              Header[]
   movements            Movement[]
   pricing              Pricing[]
+  projects             Project[]
   pointing             Pointing[]
+  emplyees             Employee[]
 }
 
 model Deposit {
@@ -716,53 +701,96 @@ model Notifications {
   link   String?
 }
 
-// ------------------------------------- AJEER API
-model Pointing {
-  id   String   @id @unique
-  date DateTime
-  note String?
+// ------------------------------------- Pointing
 
+model Project {
+  id            String         @id @unique
+  idOrg         String         @map("idOrg")
+  idEtb         String         @map("idEtb")
+  name          String
+  address       String?
+  description   String?
+  startDate     DateTime?
+  endDate       DateTime?
+  status        ProjectStatus?
+  coordinateGPS String?
+  isDeleted     Boolean        @default(false)
+
+  organization  Organization  @relation(fields: [idOrg], references: [id])
+  establishment Establishment @relation(fields: [idEtb], references: [id])
+  pointings     Pointing[]
+  employees     Employee[]
+}
+
+enum ProjectRole {
+  EMPLOYEE
+  CHEIF
+  ADMIN
+}
+
+enum ProjectStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  FINISHED
+}
+
+model Employee {
+  id           String        @id @unique
+  idOrg        String        @map("idOrg")
+  idEtb        String        @map("idEtb")
+  email        String?       @unique
+  tel1         String
+  tel2         String?
+  BirthDay     DateTime?
+  address      String?
+  nationality  String?
+  post         String?
+  comment      String?
+  salary       Float?
+  cnss         String?
+  isDeleted    Boolean       @default(false)
+  isDeclared   Boolean       @default(false)
+  createdBy    String?
+  deletedBy    String?
+  createdAt    DateTime?     @default(now())
+  deletedAt    DateTime?
+  isFamilyHead Boolean       @default(false)
+  kids         Int?          @default(0)
+  familyStatus FamilyStatus?
+
+  organization  Organization?  @relation(fields: [idOrg], references: [id])
+  establishment Establishment? @relation(fields: [idEtb], references: [id])
+  project       Project        @relation(fields: [id], references: [id])
+  Pointing      Pointing[]
+}
+
+enum FamilyStatus {
+  SINGLE
+  MARRIED
+  DIVORCED
+}
+
+model Pointing {
+  id         String   @id @unique
+  idOrg      String
+  idEtb      String
+  idProject  String
+  idEmployee String
+  date       DateTime
+  note       String?
   salary     Float?
-  deposit    Float?
-  project    Project? @relation(fields: [projectId], references: [id])
-  projectId  String?
+  deposit    Float?   @default(0)
   hours      WorkDay  @default(FULL)
   extraHours Float    @default(0)
 
-  userId String
-  user   User   @relation(fields: [userId], references: [oidcId])
-
-  isLeaving Boolean @default(false)
-
-  orgId        String
-  organization Organization? @relation(fields: [orgId], references: [id])
-
-  etbId         String
-  establishment Establishment? @relation(fields: [etbId], references: [id])
+  organization  Organization?  @relation(fields: [idOrg], references: [id])
+  establishment Establishment? @relation(fields: [idEtb], references: [id])
+  project       Project        @relation(fields: [idProject], references: [id])
+  employee      Employee       @relation(fields: [idEmployee], references: [id], onDelete: Restrict)
 }
 
 enum WorkDay {
   FULL
   HALF
   NONE
-}
-
-model Project {
-  id          String         @id @unique
-  nom         String
-  address     String?
-  description String?
-  status      ProjectStatus?
-
-  organization Organization? @relation(fields: [orgId], references: [id])
-  orgId        String?
-  pointings    Pointing[]
-  isDeleted    Boolean       @default(false)
-  users        UserProject[]
-}
-
-enum ProjectStatus {
-  DRAFT
-  IN_PROGRESS
-  FINISHED
 }
