@@ -761,7 +761,7 @@ model Employee {
   organization  Organization?  @relation(fields: [idOrg], references: [id])
   establishment Establishment? @relation(fields: [idEtb], references: [id])
   project       Project        @relation(fields: [id], references: [id])
-  Pointing      Pointing[]
+  pointings     Pointing[]
 }
 
 enum FamilyStatus {
