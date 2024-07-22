@@ -738,6 +738,8 @@ model Employee {
   id           String        @id @unique
   idOrg        String        @map("idOrg")
   idEtb        String        @map("idEtb")
+  firstName    String?
+  lastName     String?
   email        String?       @unique
   tel1         String
   tel2         String?
@@ -747,6 +749,7 @@ model Employee {
   post         String?
   comment      String?
   salary       Float?
+  cinPassp     String?
   cnss         String?
   isDeleted    Boolean       @default(false)
   isDeclared   Boolean       @default(false)
