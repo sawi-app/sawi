@@ -761,9 +761,10 @@ model Employee {
   kids         Int?          @default(0)
   familyStatus FamilyStatus?
 
+  idProject    String?
   organization  Organization?  @relation(fields: [idOrg], references: [id])
   establishment Establishment? @relation(fields: [idEtb], references: [id])
-  project       Project        @relation(fields: [id], references: [id])
+  project       Project?       @relation(fields: [idProject], references: [id])
   pointings     Pointing[]
 }
 
