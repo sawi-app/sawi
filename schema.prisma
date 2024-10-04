@@ -426,21 +426,21 @@ model Article {
   idEtb             String            @map("idEtb")
   idCategory        String            @map("idCategory")
   idSubArticle      String?
-  isSubArticle      Boolean
+  isSubArticle      Boolean           @default(false)
   reference         String            @unique
   designation       String?
   EAN               String
-  serialNumber      String
+  serialNumber      String?
   saleUnit          String            @map("saleUnit")
   purchaseUnit      String            @map("purchaseUnit")
   buySell           BuySell[]
   picking           Picking
-  isService         Boolean
+  isService         Boolean       @default(false)
   stockManagement   StockManagement
-  volume            String
-  weight            Float
+  volume            String?
+  weight            Float?
   articleManagement ArticleManagement
-  media             String
+  media             String?
 
   organization    Organization     @relation(fields: [idOrg], references: [id])
   establishment   Establishment    @relation(fields: [idEtb], references: [id])
