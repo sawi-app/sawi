@@ -429,10 +429,10 @@ model Article {
   isSubArticle      Boolean           @default(false)
   reference         String            @unique
   designation       String?
-  EAN               String
+  EAN               String?
   serialNumber      String?
-  saleUnit          String            @map("saleUnit")
-  purchaseUnit      String            @map("purchaseUnit")
+  saleUnit          String?            @map("saleUnit")
+  purchaseUnit      String?            @map("purchaseUnit")
   buySell           BuySell[]
   picking           Picking
   isService         Boolean       @default(false)
@@ -445,8 +445,8 @@ model Article {
   organization    Organization     @relation(fields: [idOrg], references: [id])
   establishment   Establishment    @relation(fields: [idEtb], references: [id])
   category        Category         @relation(fields: [idCategory], references: [id])
-  sale_unit       Unit             @relation("ArticlesSold", fields: [saleUnit], references: [id])
-  purchase_unit   Unit             @relation("ArticlesPurchased", fields: [purchaseUnit], references: [id])
+  sale_unit       Unit?             @relation("ArticlesSold", fields: [saleUnit], references: [id])
+  purchase_unit   Unit?             @relation("ArticlesPurchased", fields: [purchaseUnit], references: [id])
   subArticleProps VariantProps[]
   lotCompositions LotComposition[]
   stockpiles      Stockpile[]
