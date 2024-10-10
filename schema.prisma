@@ -161,11 +161,19 @@ model Deposit {
   idEtb         String        @map("idEtb")
   reference     String        @unique
   designation   String?
-  type          String
+  type          DepositType
+  media         String?
   organization  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
   locations     Location[]
   stockpiles    Stockpile[]
+}
+
+enum DepositType {
+  WAREHOUSE
+  STORE
+  SHOWROOM
+  OTHER
 }
 
 model Location {
@@ -176,6 +184,7 @@ model Location {
   reference     String        @unique
   designation   String?
   volume        String?
+  media         String?
   organization  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
   deposit       Deposit       @relation(fields: [idDepo], references: [id])
