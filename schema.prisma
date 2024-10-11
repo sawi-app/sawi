@@ -527,8 +527,6 @@ model Stockpile {
   idDeposit     String        @map("idDeposit")
   idLocation    String        @map("idLocation")
   idArticle     String        @map("idArticle")
-  reference     String        @unique
-  designation   String?
   qtyReal       Float?
   qtyVirtual    Float?
   qtyReserved   Float?
