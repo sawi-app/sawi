@@ -393,6 +393,7 @@ model Category {
   reference       String        @unique
   designation     String?
   isSubCategory   Boolean?      @default(false)
+  logo            String?
   organization    Organization  @relation(fields: [idOrg], references: [id])
   establishment   Establishment @relation(fields: [idEtb], references: [id])
   parent          Category?     @relation("ChildCategories", fields: [idParent], references: [id])
