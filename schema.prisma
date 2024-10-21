@@ -373,11 +373,11 @@ model Client {
   note           String?
   nature         Nature
   headers        Header[]
-  organization   Organization   @relation(fields: [idOrg], references: [id])
-  establishment  Establishment  @relation(fields: [idEtb], references: [id])
-  vat            Vat?           @relation(fields: [idVat], references: [id])
-  tax            Tax?           @relation(fields: [idTax], references: [id])
-  bankAccount    BankAccount?   @relation(fields: [idBankAccount], references: [id])
+  organization   Organization  @relation(fields: [idOrg], references: [id])
+  establishment  Establishment @relation(fields: [idEtb], references: [id])
+  vat            Vat?          @relation(fields: [idVat], references: [id])
+  tax            Tax?          @relation(fields: [idTax], references: [id])
+  bankAccount    BankAccount?  @relation(fields: [idBankAccount], references: [id])
 }
 
 enum Nature {
@@ -441,26 +441,31 @@ model Article {
   designation       String?
   EAN               String?
   serialNumber      String?
-  saleUnit          String?            @map("saleUnit")
-  purchaseUnit      String?            @map("purchaseUnit")
+  saleUnit          String?           @map("saleUnit")
+  purchaseUnit      String?           @map("purchaseUnit")
   buySell           BuySell[]
   picking           Picking
-  isService         Boolean       @default(false)
+  isService         Boolean           @default(false)
   stockManagement   StockManagement
   volume            String?
   weight            Float?
   articleManagement ArticleManagement
   media             String?
+  purchasePrice     Float?
+  salePrice         Float?
 
   organization    Organization     @relation(fields: [idOrg], references: [id])
   establishment   Establishment    @relation(fields: [idEtb], references: [id])
   category        Category         @relation(fields: [idCategory], references: [id])
-  sale_unit       Unit?             @relation("ArticlesSold", fields: [saleUnit], references: [id])
-  purchase_unit   Unit?             @relation("ArticlesPurchased", fields: [purchaseUnit], references: [id])
+  sale_unit       Unit?            @relation("ArticlesSold", fields: [saleUnit], references: [id])
+  purchase_unit   Unit?            @relation("ArticlesPurchased", fields: [purchaseUnit], references: [id])
   subArticleProps VariantProps[]
   lotCompositions LotComposition[]
   stockpiles      Stockpile[]
   pricing         Pricing[]
+  Operation       Operation?       @relation(fields: [operationId], references: [id])
+  operationId     String?
+  Movement        Movement[]
 }
 
 enum BuySell {
@@ -570,6 +575,7 @@ model Operation {
   transition     Transition[]
   headers        Header[]
   movements      Movement[]
+  articles       Article[]
   organization   Organization     @relation(fields: [idOrg], references: [id])
   establishment  Establishment    @relation(fields: [idEtb], references: [id])
 }
@@ -622,31 +628,44 @@ model Transition {
 }
 
 model Header {
-  id              String        @id
-  idOrg           String        @map("idOrg")
-  idEtb           String        @map("idEtb")
-  idClient        String?       @map("idClient")
-  idProvider      String?       @map("idProvider")
-  idContact       String?       @map("idContact")
-  idOperation     String        @map("idOperation")
-  idCommercialDoc String        @map("idCommercialDoc")
-  idPhase         String        @map("idPhase")
-  idTax           String?       @map("idTax")
-  idVat           String?       @map("idVat")
-  reference       String        @unique
-  untaxedAmount   Float
-  taxedAmount     Float
-  headerGroup     String
-  organization    Organization  @relation(fields: [idOrg], references: [id])
-  establishment   Establishment @relation(fields: [idEtb], references: [id])
-  provider        Provider?     @relation(fields: [idProvider], references: [id])
-  client          Client?       @relation(fields: [idClient], references: [id])
-  contact         Contact?      @relation(fields: [idContact], references: [id])
-  operation       Operation     @relation(fields: [idOperation], references: [id])
-  commercialDoc   CommercialDoc @relation(fields: [idCommercialDoc], references: [id])
-  phase           Phase         @relation(fields: [idPhase], references: [id])
-  tax             Tax?          @relation(fields: [idTax], references: [id])
-  vat             Vat?          @relation(fields: [idVat], references: [id])
+  id              String         @id
+  idOrg           String         @map("idOrg")
+  idEtb           String         @map("idEtb")
+  idClient        String?        @map("idClient")
+  idProvider      String?        @map("idProvider")
+  idContact       String?        @map("idContact")
+  idOperation     String?        @map("idOperation")
+  idCommercialDoc String?        @map("idCommercialDoc")
+  idPhase         String?        @map("idPhase")
+  idTax           String?        @map("idTax")
+  idVat           String?        @map("idVat")
+  reference       String         @unique
+  status          HeaderStatus?
+  untaxedAmount   Float?
+  taxedAmount     Float?
+  headerGroup     String?
+  createdAt       DateTime?
+  organization    Organization   @relation(fields: [idOrg], references: [id])
+  establishment   Establishment  @relation(fields: [idEtb], references: [id])
+  provider        Provider?      @relation(fields: [idProvider], references: [id])
+  client          Client?        @relation(fields: [idClient], references: [id])
+  contact         Contact?       @relation(fields: [idContact], references: [id])
+  operation       Operation?     @relation(fields: [idOperation], references: [id])
+  commercialDoc   CommercialDoc? @relation(fields: [idCommercialDoc], references: [id])
+  phase           Phase?         @relation(fields: [idPhase], references: [id])
+  tax             Tax?           @relation(fields: [idTax], references: [id])
+  vat             Vat?           @relation(fields: [idVat], references: [id])
+}
+
+enum HeaderStatus {
+  DRAFT
+  PAID
+  UNPAID
+  CANCELLED
+  OVERDUE // Passed the payment date
+  REFUNDED
+  SENT
+  APPROVED
 }
 
 model Movement {
@@ -659,12 +678,15 @@ model Movement {
   idUnit        String        @map("idUnit")
   idTax         String?       @map("idTax")
   idVat         String?       @map("idVat")
-  untaxedAmount Float
-  taxedAmount   Float
-  idOperation   String        @map("idOperation")
+  untaxedAmount Float?
+  taxedAmount   Float?
+  createdAt     DateTime?
+  artTax        Float?        @default(0)
+  idOperation   String?       @map("idOperation")
   organization  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
-  operation     Operation     @relation(fields: [idOperation], references: [id])
+  operation     Operation?    @relation(fields: [idOperation], references: [id])
+  article       Article?      @relation(fields: [idArticle], references: [id])
   unit          Unit          @relation(fields: [idUnit], references: [id])
   tax           Tax?          @relation(fields: [idTax], references: [id])
   vat           Vat?          @relation(fields: [idVat], references: [id])
@@ -770,7 +792,7 @@ model Employee {
   kids         Int?          @default(0)
   familyStatus FamilyStatus?
 
-  idProject    String?
+  idProject     String?
   organization  Organization?  @relation(fields: [idOrg], references: [id])
   establishment Establishment? @relation(fields: [idEtb], references: [id])
   project       Project?       @relation(fields: [idProject], references: [id])
