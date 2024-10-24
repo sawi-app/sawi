@@ -794,6 +794,7 @@ model Employee {
   isFamilyHead Boolean       @default(false)
   kids         Int?          @default(0)
   familyStatus FamilyStatus?
+  role         EmployeeRole?
 
   idProject     String?
   organization  Organization?  @relation(fields: [idOrg], references: [id])
@@ -806,6 +807,13 @@ enum FamilyStatus {
   SINGLE
   MARRIED
   DIVORCED
+}
+
+enum EmployeeRole {
+  ADMIN
+  REG_USER
+  CHIEF
+  EMPLOYEE
 }
 
 model Pointing {
