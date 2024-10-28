@@ -115,6 +115,7 @@ model Organization {
   pointings            Pointing[]
   projects             Project[]
   emplyees             Employee[]
+  EcPage               EcPage[]
 }
 
 model Establishment {
@@ -153,6 +154,7 @@ model Establishment {
   projects             Project[]
   pointing             Pointing[]
   emplyees             Employee[]
+  EcPage               EcPage[]
 }
 
 model Deposit {
@@ -792,6 +794,7 @@ model Employee {
   isFamilyHead Boolean       @default(false)
   kids         Int?          @default(0)
   familyStatus FamilyStatus?
+  role         EmployeeRole?
 
   idProject     String?
   organization  Organization?  @relation(fields: [idOrg], references: [id])
@@ -804,6 +807,13 @@ enum FamilyStatus {
   SINGLE
   MARRIED
   DIVORCED
+}
+
+enum EmployeeRole {
+  ADMIN
+  REG_USER
+  CHIEF
+  EMPLOYEE
 }
 
 model Pointing {
@@ -830,3 +840,35 @@ enum WorkDay {
   HALF
   NONE
 }
+
+// ************************************************ ECOMMERCE MODULE ************************************************
+model EcPage {
+  id     String        @id @unique
+  title  String
+  slug   String        @unique
+  blocks EcPageBlock[]
+
+  idOrg         String
+  idEtb         String
+  organization  Organization?  @relation(fields: [idOrg], references: [id])
+  establishment Establishment? @relation(fields: [idEtb], references: [id])
+}
+
+model EcPageBlock {
+  id       String      @id @unique
+  pageId   String
+  type     EcBlockType
+  position Int // Position of the block on the page
+  settings Json // JSON to store block-specific configuration details
+
+  page EcPage? @relation(fields: [pageId], references: [id])
+}
+
+enum EcBlockType {
+  SLIDESHOW
+  PRODUCT_CAROUSEL
+  TEXT
+  IMAGE
+}
+
+// ************************************************ END ECOMMERCE MODULE ************************************************
