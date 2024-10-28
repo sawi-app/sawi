@@ -436,7 +436,7 @@ model Article {
   idOrg             String            @map("idOrg")
   idEtb             String            @map("idEtb")
   idCategory        String            @map("idCategory")
-  idSubArticle      String?
+  idParent          String?
   isSubArticle      Boolean           @default(false)
   reference         String            @unique
   designation       String?
@@ -493,18 +493,18 @@ enum ArticleManagement {
 }
 
 model VariantProps {
-  id           String      @id
-  idOrg        String      @map("idOrg")
-  idEtb        String      @map("idEtb")
-  idSubArticle String      @map("idSubArticle")
-  reference    String      @unique
-  designation  String?
-  type         VariantType
-  value        String
+  id          String      @id
+  idOrg       String      @map("idOrg")
+  idEtb       String      @map("idEtb")
+  idArticle   String      @map("idArticle")
+  reference   String      @unique
+  designation String?
+  type        VariantType
+  value       String
 
   organization  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
-  subArticle    Article       @relation(fields: [idSubArticle], references: [id])
+  article       Article       @relation(fields: [idArticle], references: [id])
 }
 
 enum VariantType {
