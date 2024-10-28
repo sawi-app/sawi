@@ -871,6 +871,7 @@ enum EcBlockType {
   PRODUCT_CAROUSEL
   TEXT
   IMAGE
+  QUOTE
 }
 
 // ************************************************ END ECOMMERCE MODULE ************************************************
