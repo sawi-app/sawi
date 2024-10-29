@@ -463,7 +463,8 @@ model Article {
   sale_unit       Unit?            @relation("ArticlesSold", fields: [saleUnit], references: [id])
   purchase_unit   Unit?            @relation("ArticlesPurchased", fields: [purchaseUnit], references: [id])
   subArticleProps VariantProps[]
-  lotCompositions LotComposition[]
+  lot             LotComposition[] @relation("Lot")
+  composant       LotComposition[] @relation("Composant")
   stockpiles      Stockpile[]
   pricing         Pricing[]
   Operation       Operation?       @relation(fields: [operationId], references: [id])
@@ -520,13 +521,15 @@ model LotComposition {
   id          String  @id
   idOrg       String  @map("idOrg")
   idEtb       String  @map("idEtb")
+  idLot       String  @map("idLot")
   idComposant String  @map("idComposant")
   reference   String  @unique
   designation String?
 
   organization  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
-  composant     Article       @relation(fields: [idComposant], references: [id])
+  lot           Article       @relation("Lot", fields: [idLot], references: [id])
+  composant     Article       @relation("Composant", fields: [idComposant], references: [id])
 }
 
 model Stockpile {
