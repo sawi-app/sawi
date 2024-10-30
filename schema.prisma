@@ -846,10 +846,11 @@ enum WorkDay {
 
 // ************************************************ ECOMMERCE MODULE ************************************************
 model EcPage {
-  id     String        @id @unique
-  title  String
-  slug   String        @unique
-  blocks EcPageBlock[]
+  id        String        @id @unique
+  title     String
+  slug      String        @unique
+  published Boolean?      @default(false)
+  blocks    EcPageBlock[]
 
   idOrg         String
   idEtb         String
@@ -858,11 +859,12 @@ model EcPage {
 }
 
 model EcPageBlock {
-  id       String      @id @unique
-  pageId   String
-  type     EcBlockType
-  position Int // Position of the block on the page
-  settings Json // JSON to store block-specific configuration details
+  id        String      @id @unique
+  pageId    String
+  type      EcBlockType
+  position  Int // Position of the block on the page
+  settings  Json // JSON to store block-specific configuration details
+  published Boolean?    @default(false)
 
   page EcPage? @relation(fields: [pageId], references: [id])
 }
@@ -872,6 +874,7 @@ enum EcBlockType {
   PRODUCT_CAROUSEL
   TEXT
   IMAGE
+  QUOTE
 }
 
 // ************************************************ END ECOMMERCE MODULE ************************************************
