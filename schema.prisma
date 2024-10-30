@@ -875,6 +875,8 @@ enum EcBlockType {
   TEXT
   IMAGE
   QUOTE
+  CONTENT_IMG
+  COUNTER
 }
 
 // ************************************************ END ECOMMERCE MODULE ************************************************
