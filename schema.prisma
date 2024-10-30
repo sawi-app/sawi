@@ -877,6 +877,7 @@ enum EcBlockType {
   QUOTE
   CONTENT_IMG
   COUNTER
+  PARTNERS
 }
 
 // ************************************************ END ECOMMERCE MODULE ************************************************
