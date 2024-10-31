@@ -333,9 +333,9 @@ model Provider {
   id             String        @id
   idOrg          String        @map("idOrg")
   idEtb          String        @map("idEtb")
-  idVat          String        @map("idVat")
-  idTax          String        @map("idTax")
-  idBankAccount  String        @map("idBankAccount")
+  idVat          String?       @map("idVat")
+  idTax          String?       @map("idTax")
+  idBankAccount  String?       @map("idBankAccount")
   reference      String        @unique
   firstName      String?
   lastName       String?
@@ -346,13 +346,14 @@ model Provider {
   personalId     String?
   taxIdNumber    String?
   customsCode    String?
+  note           String?
   nature         Nature
   headers        Header[]
   organization   Organization  @relation(fields: [idOrg], references: [id])
   establishment  Establishment @relation(fields: [idEtb], references: [id])
-  vat            Vat           @relation(fields: [idVat], references: [id])
-  tax            Tax           @relation(fields: [idTax], references: [id])
-  bankAccount    BankAccount   @relation(fields: [idBankAccount], references: [id])
+  vat            Vat?          @relation(fields: [idVat], references: [id])
+  tax            Tax?          @relation(fields: [idTax], references: [id])
+  bankAccount    BankAccount?  @relation(fields: [idBankAccount], references: [id])
 }
 
 model Client {
