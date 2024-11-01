@@ -879,6 +879,7 @@ enum EcBlockType {
   CONTENT_IMG
   COUNTER
   PARTNERS
+  CTG_CAROUSEL
 }
 
 // ************************************************ END ECOMMERCE MODULE ************************************************
