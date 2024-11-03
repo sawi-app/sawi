@@ -111,6 +111,7 @@ model Organization {
   transitions          Transition[]
   headers              Header[]
   movements            Movement[]
+  ventilations         Ventilation[]
   pricing              Pricing[]
   pointings            Pointing[]
   projects             Project[]
@@ -150,6 +151,7 @@ model Establishment {
   transition           Transition[]
   headers              Header[]
   movements            Movement[]
+  ventilations         Ventilation[]
   pricing              Pricing[]
   projects             Project[]
   pointing             Pointing[]
@@ -242,6 +244,7 @@ model Tax {
   clients       Client[]
   headers       Header[]
   movements     Movement[]
+  ventilations  Ventilation[]
   pricing       Pricing[]
 }
 
@@ -259,6 +262,7 @@ model Vat {
   clients       Client[]
   headers       Header[]
   movements     Movement[]
+  ventilations  Ventilation[]
   pricing       Pricing[]
 }
 
@@ -417,6 +421,7 @@ model Unit {
   articlesSold         Article[]         @relation("ArticlesSold")
   articlesPurchased    Article[]         @relation("ArticlesPurchased")
   movements            Movement[]
+  Ventilation          Ventilation[]
 }
 
 model UnitCoefficient {
@@ -471,6 +476,7 @@ model Article {
   Operation       Operation?       @relation(fields: [operationId], references: [id])
   operationId     String?
   Movement        Movement[]
+  ventilations    Ventilation[]
 }
 
 enum BuySell {
@@ -548,6 +554,7 @@ model Stockpile {
   deposit       Deposit       @relation(fields: [idDeposit], references: [id])
   location      Location      @relation(fields: [idLocation], references: [id])
   article       Article       @relation(fields: [idArticle], references: [id])
+  ventilations  Ventilation[]
 }
 
 model Pricing {
@@ -582,6 +589,7 @@ model Operation {
   transition     Transition[]
   headers        Header[]
   movements      Movement[]
+  ventilations   Ventilation[]
   articles       Article[]
   organization   Organization     @relation(fields: [idOrg], references: [id])
   establishment  Establishment    @relation(fields: [idEtb], references: [id])
@@ -641,7 +649,7 @@ model Header {
   idClient        String?        @map("idClient")
   idProvider      String?        @map("idProvider")
   idContact       String?        @map("idContact")
-  idOperation     String?        @map("idOperation")
+  codeOperation   String?        @map("codeOperation")
   idCommercialDoc String?        @map("idCommercialDoc")
   idPhase         String?        @map("idPhase")
   idTax           String?        @map("idTax")
@@ -657,7 +665,7 @@ model Header {
   provider        Provider?      @relation(fields: [idProvider], references: [id])
   client          Client?        @relation(fields: [idClient], references: [id])
   contact         Contact?       @relation(fields: [idContact], references: [id])
-  operation       Operation?     @relation(fields: [idOperation], references: [id])
+  operation       Operation?     @relation(fields: [codeOperation], references: [codeOperation])
   commercialDoc   CommercialDoc? @relation(fields: [idCommercialDoc], references: [id])
   phase           Phase?         @relation(fields: [idPhase], references: [id])
   tax             Tax?           @relation(fields: [idTax], references: [id])
@@ -689,14 +697,41 @@ model Movement {
   taxedAmount   Float?
   createdAt     DateTime?
   artTax        Float?        @default(0)
-  idOperation   String?       @map("idOperation")
+  codeOperation String?       @map("codeOperation")
   organization  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
-  operation     Operation?    @relation(fields: [idOperation], references: [id])
+  operation     Operation?    @relation(fields: [codeOperation], references: [codeOperation])
   article       Article?      @relation(fields: [idArticle], references: [id])
   unit          Unit          @relation(fields: [idUnit], references: [id])
   tax           Tax?          @relation(fields: [idTax], references: [id])
   vat           Vat?          @relation(fields: [idVat], references: [id])
+}
+
+model Ventilation {
+  id            String        @id
+  idOrg         String        @map("idOrg")
+  idEtb         String        @map("idEtb")
+  idMovement    String        @map("idMovement")
+  idHeader      String        @map("idHeader")
+  idStockpile   String?       @map("idStockpile")
+  idArticle     String        @map("idArticle")
+  qty           Float
+  idUnit        String        @map("idUnit")
+  idTax         String?       @map("idTax")
+  idVat         String?       @map("idVat")
+  untaxedAmount Float?
+  taxedAmount   Float?
+  createdAt     DateTime?
+  artTax        Float?        @default(0)
+  codeOperation String?       @map("codeOperation")
+  organization  Organization  @relation(fields: [idOrg], references: [id])
+  establishment Establishment @relation(fields: [idEtb], references: [id])
+  operation     Operation?    @relation(fields: [codeOperation], references: [codeOperation])
+  article       Article?      @relation(fields: [idArticle], references: [id])
+  unit          Unit          @relation(fields: [idUnit], references: [id])
+  tax           Tax?          @relation(fields: [idTax], references: [id])
+  vat           Vat?          @relation(fields: [idVat], references: [id])
+  stockpile     Stockpile?    @relation(fields: [idStockpile], references: [id])
 }
 
 model UserDevice {
