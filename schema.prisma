@@ -543,16 +543,16 @@ model Stockpile {
   id            String        @id
   idOrg         String        @map("idOrg")
   idEtb         String        @map("idEtb")
-  idDeposit     String        @map("idDeposit")
-  idLocation    String        @map("idLocation")
+  idDeposit     String?       @map("idDeposit")
+  idLocation    String?       @map("idLocation")
   idArticle     String        @map("idArticle")
   qtyReal       Float?
   qtyVirtual    Float?
   qtyReserved   Float?
   organization  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
-  deposit       Deposit       @relation(fields: [idDeposit], references: [id])
-  location      Location      @relation(fields: [idLocation], references: [id])
+  deposit       Deposit?      @relation(fields: [idDeposit], references: [id])
+  location      Location?     @relation(fields: [idLocation], references: [id])
   article       Article       @relation(fields: [idArticle], references: [id])
   ventilations  Ventilation[]
 }
