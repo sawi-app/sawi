@@ -460,8 +460,11 @@ model Article {
   weight            Float?
   articleManagement ArticleManagement
   media             String?
+  gallery           String[]
   purchasePrice     Float?
   salePrice         Float?
+  description       String?
+  shortDescription  String?
 
   organization    Organization     @relation(fields: [idOrg], references: [id])
   establishment   Establishment    @relation(fields: [idEtb], references: [id])
@@ -511,6 +514,7 @@ model VariantProps {
   designation String?
   type        VariantType
   value       String
+  image       String?
 
   organization  Organization  @relation(fields: [idOrg], references: [id])
   establishment Establishment @relation(fields: [idEtb], references: [id])
@@ -882,11 +886,12 @@ enum WorkDay {
 
 // ************************************************ ECOMMERCE MODULE ************************************************
 model EcPage {
-  id        String        @id @unique
-  title     String
-  slug      String        @unique
-  published Boolean?      @default(false)
-  blocks    EcPageBlock[]
+  id             String        @id @unique
+  title          String
+  slug           String        @unique
+  published      Boolean?      @default(false)
+  showInMainMenu Boolean?      @default(false)
+  blocks         EcPageBlock[]
 
   idOrg         String
   idEtb         String
