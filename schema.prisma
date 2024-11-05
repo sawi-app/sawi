@@ -893,10 +893,10 @@ model EcPage {
   showInMainMenu Boolean?      @default(false)
   blocks         EcPageBlock[]
 
-  idOrg         String
-  idEtb         String
-  organization  Organization?  @relation(fields: [idOrg], references: [id])
-  establishment Establishment? @relation(fields: [idEtb], references: [id])
+  idOrg           String
+  organization    Organization?  @relation(fields: [idOrg], references: [id])
+  Establishment   Establishment? @relation(fields: [establishmentId], references: [id])
+  establishmentId String?
 }
 
 model EcPageBlock {
